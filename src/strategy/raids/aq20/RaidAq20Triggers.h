@@ -18,16 +18,19 @@ public:
 };
 #endif
 
-class KurinnaxxAvoidCleaveTrigger : public IsNotBehindTargetTrigger
+class MoveBehindTheBossTrigger : public IsNotBehindTargetTrigger
 {
 public:
-    KurinnaxxAvoidCleaveTrigger(PlayerbotAI* ai) : IsNotBehindTargetTrigger(ai) {}
-    virtual bool IsActive();
+    MoveBehindTheBossTrigger(PlayerbotAI* botAI) : IsNotBehindTargetTrigger(botAI) {}
+    bool IsActive() override;
+
+protected:
+    float distance, delta_angle;
 };
 
-class KurinnaxxMainTankMortalWoundTrigger : public Trigger
+class KurinnaxxTankMortalWoundTrigger : public Trigger
 {
 public:
-    KurinnaxxMainTankMortalWoundTrigger(PlayerbotAI* botAI) : Trigger(botAI, "kurinnaxx main tank mortal wound trigger") {}
+    KurinnaxxTankMortalWoundTrigger(PlayerbotAI* botAI) : Trigger(botAI, "kurinnaxx tank mortal wound trigger") {}
     bool IsActive() override;
 };

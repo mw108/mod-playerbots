@@ -10,21 +10,6 @@
 #include "RaidAq20BossHelper.h"
 #include "RaidAq20Scripts.h"
 
-class KurinnaxxGoBehindAction : public MovementAction
-{
-public:
-    KurinnaxxGoBehindAction(PlayerbotAI* ai, float distance = 24.0f, float delta_angle = M_PI / 8)
-        : MovementAction(ai, "kurinnaxx go behind")
-    {
-        this->distance = distance;
-        this->delta_angle = delta_angle;
-    }
-    virtual bool Execute(Event event);
-
-protected:
-    float distance, delta_angle;
-};
-
 class Aq20UseCrystalAction : public MovementAction
 {
 public:

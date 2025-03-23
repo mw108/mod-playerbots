@@ -10,23 +10,6 @@
 #include "ScriptedCreature.h"
 #include "SharedDefines.h"
 
-bool KurinnaxxGoBehindAction::Execute(Event event)
-{
-    Unit* boss = AI_VALUE(Unit*, "boss target");
-    if (!boss)
-    {
-        return false;
-    }
-    // Position* pos = boss->GetPosition();
-    float orientation = boss->GetOrientation() + M_PI + delta_angle;
-    float x = boss->GetPositionX();
-    float y = boss->GetPositionY();
-    float z = boss->GetPositionZ();
-    float rx = x + cos(orientation) * distance;
-    float ry = y + sin(orientation) * distance;
-    return MoveTo(bot->GetMapId(), rx, ry, z, false, false, false, false, MovementPriority::MOVEMENT_COMBAT);
-}
-
 bool Aq20UseCrystalAction::Execute(Event event)
 {
     if (Unit* boss = AI_VALUE2(Unit*, "find target", "ossirian the unscarred"))
@@ -35,17 +18,14 @@ bool Aq20UseCrystalAction::Execute(Event event)
         {
             float botDist = bot->GetDistance(crystal);
             if (botDist > INTERACTION_DISTANCE)
-                return MoveTo(bot->GetMapId(),
-                    crystal->GetPositionX() + frand(-3.5f, 3.5f),
-                    crystal->GetPositionY() + frand(-3.5f, 3.5f),
-                    crystal->GetPositionZ());
+                return MoveTo(bot->GetMapId(), crystal->GetPositionX() + frand(-3.5f, 3.5f),
+                              crystal->GetPositionY() + frand(-3.5f, 3.5f), crystal->GetPositionZ());
 
             // if we're already in range just wait here until it's time to activate crystal
             SetNextMovementDelay(500);
 
             // don't activate crystal if boss too far or its already been activated
-            if (boss->GetDistance(crystal) > 25.0f ||
-                crystal->HasGameObjectFlag(GO_FLAG_IN_USE))
+            if (boss->GetDistance(crystal) > 25.0f || crystal->HasGameObjectFlag(GO_FLAG_IN_USE))
                 return false;
 
             // don't activate crystal if boss doesn't have buff yet AND isn't going to have it soon

@@ -10,17 +10,18 @@ class RaidAq20TriggerContext : public NamedObjectContext<Trigger>
 public:
     RaidAq20TriggerContext()
     {
+        creators["move behind the boss"] = &RaidAq20TriggerContext::move_behind_the_boss;
+
         // Kurinnaxx
-        creators["kurinnaxx avoid cleave"] = &RaidAq20TriggerContext::kurinnaxx_avoid_cleave;
-        creators["kurinnaxx main tank mortal wound"] = &RaidAq20TriggerContext::kurinnaxx_main_tank_mortal_wound;
+        creators["kurinnaxx tank mortal wound"] = &RaidAq20TriggerContext::kurinnaxx_tank_mortal_wound;
 
         // Ossirian
         creators["aq20 move to crystal"] = &RaidAq20TriggerContext::move_to_crystal;
     }
 
 private:
-    static Trigger* kurinnaxx_avoid_cleave(PlayerbotAI* ai) { return new KurinnaxxAvoidCleaveTrigger(ai); }
-    static Trigger* kurinnaxx_main_tank_mortal_wound(PlayerbotAI* ai) { return new KurinnaxxMainTankMortalWoundTrigger(ai);  }
+    static Trigger* move_behind_the_boss(PlayerbotAI* ai) { return new MoveBehindTheBossTrigger(ai); }
+    static Trigger* kurinnaxx_tank_mortal_wound(PlayerbotAI* ai) { return new KurinnaxxTankMortalWoundTrigger(ai);  }
     static Trigger* move_to_crystal(PlayerbotAI* ai) { return new Aq20MoveToCrystalTrigger(ai); }
 };
 

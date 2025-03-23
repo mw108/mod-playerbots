@@ -7,6 +7,54 @@
 #include "SharedDefines.h"
 #include "Trigger.h"
 
+bool MoveBehindTheBossTrigger::IsActive()
+{
+    Unit* kurinnaxx = AI_VALUE(Unit*, "kurinnaxx");
+    if (!kurinnaxx)
+    {
+        return false;
+    }
+
+    Unit* boss = kurinnaxx;
+
+    // Don't move if boss is already targeting the bot
+    if (boss->GetTarget() == bot->GetGUID())
+    {
+        return false;
+    }
+
+    // Don't move if bot is the main tank
+    if (botAI->IsMainTank(bot))
+    {
+        return false;
+    }
+
+    // Don't move if bot is ranged
+    if (botAI->IsRanged(bot))
+    {
+        return false;
+    }
+
+    return IsNotBehindTargetTrigger::IsActive();
+    /*
+    // If bot is the assist tank, move to the flank of the boss
+    float modifier = 1.0f;
+    if (botAI->IsAssistTank(bot))
+    {
+        modifier = 2.0f;
+    }
+
+    // Position* pos = boss->GetPosition();
+    float orientation = boss->GetOrientation() + M_PI + (delta_angle / modifier);
+    float x = boss->GetPositionX();
+    float y = boss->GetPositionY();
+    float z = boss->GetPositionZ();
+    float rx = x + cos(orientation) * distance;
+    float ry = y + sin(orientation) * distance;
+    return MoveTo(bot->GetMapId(), rx, ry, z, false, false, false, false, MovementPriority::MOVEMENT_COMBAT);
+    */
+}
+
 bool Aq20MoveToCrystalTrigger::IsActive()
 {
     if (Unit* boss = AI_VALUE2(Unit*, "find target", "ossirian the unscarred"))
@@ -39,48 +87,27 @@ bool Aq20MoveToCrystalTrigger::IsActive()
     return false;
 }
 
-bool KurinnaxxAvoidCleaveTrigger::IsActive()
+bool KurinnaxxTankMortalWoundTrigger::IsActive()
 {
-    Unit* boss = AI_VALUE2(Unit*, "find target", "kurinnaxx");
-    if (!boss)
+    if (Unit* boss = AI_VALUE2(Unit*, "find target", "kurinnaxx"))
     {
-        return false;
-    }
-    bool result = IsNotBehindTargetTrigger::IsActive() && botAI->GetState() == BOT_STATE_COMBAT &&
-                  !botAI->IsRanged(bot) && !botAI->IsMainTank(bot) && boss->GetTarget() != bot->GetGUID();
-    if (result)
-    {
-        botAI->Yell("Moving behind boss");
-    }
-    return result;
-}
+        if (boss->IsInCombat())
+        {
+            Unit* target = boss->GetTarget();
+            if (!target)
+            {
+                return false;
+            }
 
-bool KurinnaxxMainTankMortalWoundTrigger::IsActive()
-{
-    bool bossPresent = false;
-    if (AI_VALUE2(Unit*, "find target", "kurinnaxx"))
-        bossPresent = true;
+            Aura* aura = botAI->GetAura("mortal wound", target, false, true);
+            if (!aura || aura->GetStackAmount() < 3)
+            {
+                return false;
+            }
 
-    if (!bossPresent)
-        return false;
-
-    if (!botAI->IsAssistTankOfIndex(bot, 0))
-    {
-        return false;
-    }
-    Unit* mt = AI_VALUE(Unit*, "main tank");
-    if (!mt)
-    {
-        return false;
+            return true;
+        }
     }
 
-    Aura* aura = botAI->GetAura("mortal wound", mt, false, true);
-    if (!aura || aura->GetStackAmount() < 4)
-    {
-        return false;
-    }
-
-    botAI->Yell("Taunting boss");
-
-    return true;
+    return false;
 }
