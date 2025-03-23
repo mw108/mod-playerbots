@@ -241,6 +241,16 @@ bool TradeStatusAction::CheckTrade()
     if (!botMoney && !playerMoney)
         return true;
 
+    // Player just wants money from the bot
+    if (sPlayerbotAIConfig->allowPlayerbotsAtm && !isGettingItem && !isGivingItem && botMoney > playerMoney)
+    {
+        std::ostringstream out;
+        out << "You are a thief!";
+        botAI->TellMaster(out);
+        botAI->PlaySound(TEXT_EMOTE_SIGH);
+        return true;
+    }
+
     if (!botItemsMoney && !playerItemsMoney)
     {
         botAI->TellError("There are no items to trade");

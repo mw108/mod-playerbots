@@ -544,6 +544,10 @@ AiPlayerbot.DisableDeathKnightLogin = 0
 # Default: 0
 AiPlayerbot.LimitTalentsExpansion = 0
 
+# Allow playerbots to be used as ATM
+# Players can trade playerbots and request an amount of gold from them via whisper command
+AiPlayerbot.AllowPlayerbotsAtm = 1
+
 #
 #
 #
