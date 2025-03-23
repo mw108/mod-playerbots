@@ -152,9 +152,9 @@ bool TradeStatusAction::CheckTrade()
     if (!bot->GetTradeData() || !trader->GetTradeData())
         return false;
 
+	bool isGivingItem = false;
     if (!botAI->HasActivePlayerMaster() && GET_PLAYERBOT_AI(bot->GetTrader()))
     {
-        bool isGivingItem = false;
         for (uint32 slot = 0; slot < TRADE_SLOT_TRADED_COUNT; ++slot)
         {
             Item* item = bot->GetTradeData()->GetItem((TradeSlots)slot);
