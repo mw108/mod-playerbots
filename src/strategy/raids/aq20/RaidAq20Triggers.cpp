@@ -9,6 +9,7 @@
 
 bool MoveBehindTheBossTrigger::IsActive()
 {
+    /*
     Unit* kurinnaxx = AI_VALUE(Unit*, "kurinnaxx");
     if (!kurinnaxx)
     {
@@ -36,6 +37,9 @@ bool MoveBehindTheBossTrigger::IsActive()
     }
 
     return IsNotBehindTargetTrigger::IsActive();
+    */
+    return false;
+    
     /*
     // If bot is the assist tank, move to the flank of the boss
     float modifier = 1.0f;
