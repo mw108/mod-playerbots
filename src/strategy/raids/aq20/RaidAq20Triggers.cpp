@@ -50,7 +50,7 @@ bool KurinnaxxAvoidCleaveTrigger::IsActive()
                   !botAI->IsRanged(bot) && !botAI->IsMainTank(bot) && boss->GetTarget() != bot->GetGUID();
     if (result)
     {
-        botAI->Yell('Moving behind boss');
+        botAI->Yell("Moving behind boss");
     }
     return result;
 }
@@ -82,7 +82,7 @@ bool KurinnaxxMainTankMortalWoundTrigger::IsActive()
 
     if (result)
     {
-        botAI->Yell('Taunting boss');
+        botAI->Yell("Taunting boss");
     }
 
     return true;
