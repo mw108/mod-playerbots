@@ -80,10 +80,7 @@ bool KurinnaxxMainTankMortalWoundTrigger::IsActive()
         return false;
     }
 
-    if (result)
-    {
-        botAI->Yell("Taunting boss");
-    }
+    botAI->Yell("Taunting boss");
 
     return true;
 }
