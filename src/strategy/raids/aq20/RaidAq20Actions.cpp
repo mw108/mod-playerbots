@@ -1,8 +1,31 @@
 #include "RaidAq20Actions.h"
 
+#include "LastMovementValue.h"
+#include "ObjectGuid.h"
+#include "PlayerbotAIConfig.h"
 #include "Playerbots.h"
+#include "RaidAq20BossHelper.h"
+#include "RaidAq20Strategy.h"
 #include "RaidAq20Utils.h"
+#include "ScriptedCreature.h"
+#include "SharedDefines.h"
 
+bool KurinnaxxGoBehindAction::Execute(Event event)
+{
+    Unit* boss = AI_VALUE(Unit*, "boss target");
+    if (!boss)
+    {
+        return false;
+    }
+    // Position* pos = boss->GetPosition();
+    float orientation = boss->GetOrientation() + M_PI + delta_angle;
+    float x = boss->GetPositionX();
+    float y = boss->GetPositionY();
+    float z = boss->GetPositionZ();
+    float rx = x + cos(orientation) * distance;
+    float ry = y + sin(orientation) * distance;
+    return MoveTo(bot->GetMapId(), rx, ry, z, false, false, false, false, MovementPriority::MOVEMENT_COMBAT);
+}
 
 bool Aq20UseCrystalAction::Execute(Event event)
 {

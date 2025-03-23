@@ -1,8 +1,11 @@
 #include "RaidAq20Triggers.h"
 
-#include "SharedDefines.h"
+#include "EventMap.h"
+#include "Playerbots.h"
 #include "RaidAq20Utils.h"
-
+#include "ScriptedCreature.h"
+#include "SharedDefines.h"
+#include "Trigger.h"
 
 bool Aq20MoveToCrystalTrigger::IsActive()
 {
@@ -34,4 +37,42 @@ bool Aq20MoveToCrystalTrigger::IsActive()
         }
     }
     return false;
+}
+
+bool KurinnaxxAvoidCleaveTrigger::IsActive()
+{
+    Unit* boss = AI_VALUE2(Unit*, "find target", "kurinnaxx");
+    if (!boss)
+    {
+        return false;
+    }
+    return IsNotBehindTargetTrigger::IsActive() && botAI->GetState() == BOT_STATE_COMBAT && !botAI->IsRanged(bot) &&
+           !botAI->IsMainTank(bot) && boss->GetTarget() != bot->GetGUID();
+}
+
+bool KurinnaxxMainTankMortalWoundTrigger::IsActive()
+{
+    bool bossPresent = false;
+    if (AI_VALUE2(Unit*, "find target", "kurinnaxx"))
+        bossPresent = true;
+
+    if (!bossPresent)
+        return false;
+
+    if (!botAI->IsAssistTankOfIndex(bot, 0))
+    {
+        return false;
+    }
+    Unit* mt = AI_VALUE(Unit*, "main tank");
+    if (!mt)
+    {
+        return false;
+    }
+
+    Aura* aura = botAI->GetAura("mortal wound", mt, false, true);
+    if (!aura || aura->GetStackAmount() < 4)
+    {
+        return false;
+    }
+    return true;
 }
