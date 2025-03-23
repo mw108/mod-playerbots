@@ -3,7 +3,6 @@
 
 #include <string>
 
-#include "../RaidGenericBossHelper.h"
 #include "AiObject.h"
 #include "AiObjectContext.h"
 #include "EventMap.h"
