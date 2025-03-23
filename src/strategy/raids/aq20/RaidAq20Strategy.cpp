@@ -4,7 +4,7 @@
 
 void RaidAq20Strategy::InitTriggers(std::vector<TriggerNode*>& triggers)
 {
-    //triggers.push_back(new TriggerNode("move behind the boss"));
+    triggers.push_back(new TriggerNode("move behind the boss"));
 
     // Kurinaxx
     triggers.push_back(new TriggerNode("kurinnaxx tank mortal wound",
