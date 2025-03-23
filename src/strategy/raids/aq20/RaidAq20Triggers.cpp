@@ -89,24 +89,28 @@ bool Aq20MoveToCrystalTrigger::IsActive()
 
 bool KurinnaxxTankMortalWoundTrigger::IsActive()
 {
-    if (Unit* boss = AI_VALUE2(Unit*, "find target", "kurinnaxx"))
+    Unit* kurinnaxx = AI_VALUE(Unit*, "kurinnaxx");
+    if (!kurinnaxx)
     {
-        if (boss->IsInCombat())
+        return false;
+    }
+
+    Unit* boss = kurinnaxx;
+    if (boss->IsInCombat())
+    {
+        Unit* target = botAI->GetUnit(boss->GetTarget());
+        if (!target)
         {
-            Unit* target = boss->GetTarget();
-            if (!target)
-            {
-                return false;
-            }
-
-            Aura* aura = botAI->GetAura("mortal wound", target, false, true);
-            if (!aura || aura->GetStackAmount() < 3)
-            {
-                return false;
-            }
-
-            return true;
+            return false;
         }
+
+        Aura* aura = botAI->GetAura("mortal wound", target, false, true);
+        if (!aura || aura->GetStackAmount() < 3)
+        {
+            return false;
+        }
+
+        return true;
     }
 
     return false;
