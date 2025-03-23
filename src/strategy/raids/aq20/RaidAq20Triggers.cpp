@@ -90,7 +90,7 @@ bool Aq20MoveToCrystalTrigger::IsActive()
 
 bool KurinnaxxTankMortalWoundTrigger::IsActive()
 {
-    Unit* kurinnaxx = AI_VALUE(Unit*, "kurinnaxx");
+    Unit* kurinnaxx = AI_VALUE2(Unit*, "find target", "kurinnaxx");
     if (!kurinnaxx)
     {
         return false;
