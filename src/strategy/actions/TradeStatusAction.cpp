@@ -242,7 +242,7 @@ bool TradeStatusAction::CheckTrade()
         return true;
 
     // Player just wants money from the bot
-    if (sPlayerbotAIConfig->allowPlayerbotsAtm && !isGettingItem && !isGivingItem && botMoney > playerMoney)
+    if (sPlayerbotAIConfig->allowPlayerbotsAtm && !isGivingItem && botMoney > playerMoney)
     {
         std::ostringstream out;
         out << "You are a thief!";
