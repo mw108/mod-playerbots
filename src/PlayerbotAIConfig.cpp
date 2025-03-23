@@ -330,7 +330,7 @@ bool PlayerbotAIConfig::Initialize()
     useFastFlyMountAtMinLevel = sConfigMgr->GetOption<int32>("AiPlayerbot.UseFastFlyMountAtMinLevel", 70);
 	
     // Playerbots ATM
-    allowPlayerBotsAtm = sConfigMgr->GetOption<bool>("AiPlayerbot.AllowPlayerbotsAtm", false); 	
+    allowPlayerbotsAtm = sConfigMgr->GetOption<bool>("AiPlayerbot.AllowPlayerbotsAtm", false); 	
 
     LOG_INFO("server.loading", "Loading TalentSpecs...");
 
