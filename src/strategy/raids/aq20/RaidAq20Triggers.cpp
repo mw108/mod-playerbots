@@ -46,8 +46,13 @@ bool KurinnaxxAvoidCleaveTrigger::IsActive()
     {
         return false;
     }
-    return IsNotBehindTargetTrigger::IsActive() && botAI->GetState() == BOT_STATE_COMBAT && !botAI->IsRanged(bot) &&
-           !botAI->IsMainTank(bot) && boss->GetTarget() != bot->GetGUID();
+    bool result = IsNotBehindTargetTrigger::IsActive() && botAI->GetState() == BOT_STATE_COMBAT &&
+                  !botAI->IsRanged(bot) && !botAI->IsMainTank(bot) && boss->GetTarget() != bot->GetGUID();
+    if (result)
+    {
+        bot->Yell('Moving behind boss', LANG_UNIVERSAL);
+    }
+    return result;
 }
 
 bool KurinnaxxMainTankMortalWoundTrigger::IsActive()
@@ -74,5 +79,11 @@ bool KurinnaxxMainTankMortalWoundTrigger::IsActive()
     {
         return false;
     }
+
+    if (result)
+    {
+        mt->Yell('Taunting boss', LANG_UNIVERSAL);
+    }
+
     return true;
 }
