@@ -9,7 +9,7 @@
 
 bool MoveBehindTheBossTrigger::IsActive()
 {
-    Unit* kurinnaxx = AI_VALUE(Unit*, "kurinnaxx");
+    Unit* kurinnaxx = AI_VALUE2(Unit*, "find target", "kurinnaxx");
     if (!kurinnaxx)
     {
         return false;
