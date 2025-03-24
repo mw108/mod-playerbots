@@ -4,7 +4,7 @@
 
 void RaidAq20Strategy::InitTriggers(std::vector<TriggerNode*>& triggers)
 {
-    triggers.push_back(new TriggerNode("move behind the boss"));
+    triggers.push_back(new TriggerNode("move behind the boss"), NextAction::array(0, new NextAction("melee"), nullptr));
 
     // Kurinaxx
     triggers.push_back(new TriggerNode("kurinnaxx tank mortal wound",
@@ -12,7 +12,7 @@ void RaidAq20Strategy::InitTriggers(std::vector<TriggerNode*>& triggers)
 
     // Ossirian
     triggers.push_back(new TriggerNode("aq20 move to crystal",
-                                       NextAction::array(0, new NextAction("aq20 use crystal", ACTION_RAID), nullptr)));
+        NextAction::array(0, new NextAction("aq20 use crystal", ACTION_RAID), nullptr)));
 }
 
 void RaidAq20Strategy::InitMultipliers(std::vector<Multiplier*>& multipliers)
