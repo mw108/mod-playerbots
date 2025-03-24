@@ -99,32 +99,22 @@ bool KurinnaxxTankMortalWoundTrigger::IsActive()
     Unit* boss = kurinnaxx;
     if (boss->IsInCombat())
     {
-        Unit* target = botAI->GetUnit(boss->GetTarget());
-        if (!target)
+        if (!botAI->IsAssistTankOfIndex(bot, 0))
         {
             return false;
         }
-
-        if (!botAI->IsMainTank(bot) && !botAI->IsTank(bot, true))
+        Unit* mt = AI_VALUE(Unit*, "main tank");
+        if (!mt)
         {
             return false;
         }
-
-        Aura* auraTarget = botAI->GetAura("mortal wound", target, false, true);
-        if (!auraTarget || auraTarget->GetStackAmount() < 3)
+        Aura* aura = botAI->GetAura("mortal wound", mt, false, true);
+        if (!aura || aura->GetStackAmount() < 3)
         {
             return false;
         }
-
-        Aura* auraSelf = botAI->GetAura("mortal wound", bot, false, true);
-        if (!auraSelf || auraSelf->GetStackAmount() > 0)
-        {
-            return false;
-        }
-
         return true;
     }
 
     return false;
 }
-
