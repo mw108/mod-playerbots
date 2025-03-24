@@ -28,6 +28,12 @@ protected:
     float distance, delta_angle;
 };
 
+class KurinnaxxFindSandTrapTrigger : public SpellTrigger
+{
+public:
+    KurinnaxxFindSandTrapTrigger(PlayerbotAI* botAI) : SpellTrigger(botAI, "sand trap") {}
+}
+
 class KurinnaxxTankMortalWoundTrigger : public Trigger
 {
 public:

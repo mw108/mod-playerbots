@@ -10,6 +10,16 @@
 #include "ScriptedCreature.h"
 #include "SharedDefines.h"
 
+bool KurinnaxxMoveAwayFromSandTrapAction::Execute(Event event)
+{
+    if (Unit* boss = AI_VALUE2(Unit*, "find target", "kurinnaxx"))
+    {
+        return MoveTo(bot->GetMapId(), boss->GetPositionX() + frand(-9.0f, 9.0f),
+                      boss->GetPositionY() + frand(-9.0f, 9.0f), boss->GetPositionZ());
+    }
+    return false;
+}
+
 bool Aq20UseCrystalAction::Execute(Event event)
 {
     if (Unit* boss = AI_VALUE2(Unit*, "find target", "ossirian the unscarred"))

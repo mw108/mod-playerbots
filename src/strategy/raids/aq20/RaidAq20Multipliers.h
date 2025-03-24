@@ -4,11 +4,4 @@
 #include "Multiplier.h"
 #include "RaidAq20BossHelper.h"
 
-class KurinnaxxGenericMultiplier : public Multiplier
-{
-public:
-    KurinnaxxGenericMultiplier(PlayerbotAI* ai) : Multiplier(ai, "kurinnaxx generic") {}
-    float GetValue(Action* action) override;
-};
-
 #endif

@@ -10,6 +10,13 @@
 #include "RaidAq20BossHelper.h"
 #include "RaidAq20Scripts.h"
 
+class KurinnaxxMoveAwayFromSandTrapAction : public MovementAction
+{
+public:
+    KurinnaxxMoveAwayFromSandTrapAction(PlayerbotAI* botAI, std::string const name = "kurinnaxx move away from sand trap") : MovementAction(botAI, name) {}
+    bool Execute(Event event) override;
+};
+
 class Aq20UseCrystalAction : public MovementAction
 {
 public:
