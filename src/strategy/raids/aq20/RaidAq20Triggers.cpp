@@ -36,7 +36,7 @@ bool MoveBehindTheBossTrigger::IsActive()
     }
 
     return IsNotBehindTargetTrigger::IsActive();
-    
+
     /*
     // If bot is the assist tank, move to the flank of the boss
     float modifier = 1.0f;
@@ -105,8 +105,19 @@ bool KurinnaxxTankMortalWoundTrigger::IsActive()
             return false;
         }
 
-        Aura* aura = botAI->GetAura("mortal wound", target, false, true);
-        if (!aura || aura->GetStackAmount() < 3)
+        if (!botAI->IsMainTank(bot) && !botAI->IsAssistTank(bot))
+        {
+            return false;
+        }
+
+        Aura* auraTarget = botAI->GetAura("mortal wound", target, false, true);
+        if (!auraTarget || auraTarget->GetStackAmount() < 3)
+        {
+            return false;
+        }
+
+        Aura* auraSelf = botAI->GetAura("mortal wound", bot, false, true);
+        if (!auraSelf || auraSelf->GetStackAmount() > 0)
         {
             return false;
         }
