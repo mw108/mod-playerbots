@@ -105,7 +105,7 @@ bool KurinnaxxTankMortalWoundTrigger::IsActive()
             return false;
         }
 
-        if (!botAI->IsMainTank(bot) && !botAI->IsAssistTank(bot))
+        if (!botAI->IsMainTank(bot) && !botAI->IsTank(bot, true))
         {
             return false;
         }
@@ -127,3 +127,4 @@ bool KurinnaxxTankMortalWoundTrigger::IsActive()
 
     return false;
 }
+
