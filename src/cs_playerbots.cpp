@@ -43,12 +43,19 @@ public:
 
         static ChatCommandTable commandTable = {
             {"playerbots", playerbotsCommandTable},
+            {"partybots", HandlePartybotCommand, SEC_PLAYER, Console::No}
         };
 
         return commandTable;
     }
 
-    static bool HandlePlayerbotCommand(ChatHandler* handler, char const* args)
+    static bool HandlePartybotCommand(ChatHandler* handler, char const* args)
+    {
+        return PlayerbotMgr::HandlePartybotMgrCommand(handler, args);
+    }
+
+        static bool
+        HandlePlayerbotCommand(ChatHandler* handler, char const* args)
     {
         return PlayerbotMgr::HandlePlayerbotMgrCommand(handler, args);
     }

@@ -26,9 +26,8 @@
 #include "PlayerScript.h"
 #include "PlayerbotAIConfig.h"
 #include "ScriptMgr.h"
-#include "cs_playerbots.h"
-#include "cs_partybots.h"
 #include "cmath"
+#include "cs_playerbots.h"
 
 class PlayerbotsDatabaseScript : public DatabaseScript
 {
@@ -77,17 +76,14 @@ public:
 class PlayerbotsPlayerScript : public PlayerScript
 {
 public:
-    PlayerbotsPlayerScript() : PlayerScript("PlayerbotsPlayerScript", {
-        PLAYERHOOK_ON_LOGIN,
-        PLAYERHOOK_ON_AFTER_UPDATE,
-        PLAYERHOOK_ON_CHAT,
-        PLAYERHOOK_ON_CHAT_WITH_CHANNEL,
-        PLAYERHOOK_ON_CHAT_WITH_GROUP,
-        PLAYERHOOK_ON_BEFORE_CRITERIA_PROGRESS,
-        PLAYERHOOK_ON_BEFORE_ACHI_COMPLETE,
-        PLAYERHOOK_CAN_PLAYER_USE_PRIVATE_CHAT,
-        PLAYERHOOK_ON_GIVE_EXP
-    }) {}
+    PlayerbotsPlayerScript()
+        : PlayerScript(
+              "PlayerbotsPlayerScript",
+              {PLAYERHOOK_ON_LOGIN, PLAYERHOOK_ON_AFTER_UPDATE, PLAYERHOOK_ON_CHAT, PLAYERHOOK_ON_CHAT_WITH_CHANNEL,
+               PLAYERHOOK_ON_CHAT_WITH_GROUP, PLAYERHOOK_ON_BEFORE_CRITERIA_PROGRESS,
+               PLAYERHOOK_ON_BEFORE_ACHI_COMPLETE, PLAYERHOOK_CAN_PLAYER_USE_PRIVATE_CHAT, PLAYERHOOK_ON_GIVE_EXP})
+    {
+    }
 
     void OnPlayerLogin(Player* player) override
     {
@@ -102,9 +98,10 @@ public:
             // but it should be publicly accessible and include all modifications you've made
             if (sPlayerbotAIConfig->enabled)
             {
-                ChatHandler(player->GetSession()).SendSysMessage(
-                    "|cff00ff00This server runs with |cff00ccffmod-playerbots|r "
-                    "|cffcccccchttps://github.com/liyunfan1223/mod-playerbots|r");
+                ChatHandler(player->GetSession())
+                    .SendSysMessage(
+                        "|cff00ff00This server runs with |cff00ccffmod-playerbots|r "
+                        "|cffcccccchttps://github.com/liyunfan1223/mod-playerbots|r");
             }
 
             if (sPlayerbotAIConfig->enabled || sPlayerbotAIConfig->randomBotAutologin)
@@ -113,9 +110,9 @@ public:
                     std::to_string(std::ceil((sPlayerbotAIConfig->maxRandomBots * 0.11 / 60) * 10) / 10.0);
                 roundedTime = roundedTime.substr(0, roundedTime.find('.') + 2);
 
-                ChatHandler(player->GetSession()).SendSysMessage(
-                    "|cff00ff00Playerbots:|r bot initialization at server startup takes about '" 
-                    + roundedTime + "' minutes.");
+                ChatHandler(player->GetSession())
+                    .SendSysMessage("|cff00ff00Playerbots:|r bot initialization at server startup takes about '" +
+                                    roundedTime + "' minutes.");
             }
         }
     }
@@ -193,14 +190,6 @@ public:
             }
         }
 
-        if (PartybotMgr* partybotMrg = GET_PARTYBOT_MGR(player))
-        {
-            if (channel->GetFlags() & 0x18)
-            {
-                partybotMrg->HandleCommand(type, msg);
-            }
-        }
-
         sRandomPlayerbotMgr->HandleCommand(type, msg, player);
     }
 
@@ -226,7 +215,7 @@ public:
     {
         if (!player->GetSession()->IsBot())
             return;
-        
+
         if (sPlayerbotAIConfig->playerbotsXPrate != 1.0)
         {
             amount = static_cast<uint32>(std::round(static_cast<float>(amount) * sPlayerbotAIConfig->playerbotsXPrate));
@@ -256,9 +245,7 @@ public:
 class PlayerbotsServerScript : public ServerScript
 {
 public:
-    PlayerbotsServerScript() : ServerScript("PlayerbotsServerScript", {
-        SERVERHOOK_CAN_PACKET_RECEIVE
-    }) {}
+    PlayerbotsServerScript() : ServerScript("PlayerbotsServerScript", {SERVERHOOK_CAN_PACKET_RECEIVE}) {}
 
     void OnPacketReceived(WorldSession* session, WorldPacket const& packet) override
     {
@@ -271,9 +258,7 @@ public:
 class PlayerbotsWorldScript : public WorldScript
 {
 public:
-    PlayerbotsWorldScript() : WorldScript("PlayerbotsWorldScript", {
-        WORLDHOOK_ON_BEFORE_WORLD_INITIALIZED
-    }) {}
+    PlayerbotsWorldScript() : WorldScript("PlayerbotsWorldScript", {WORLDHOOK_ON_BEFORE_WORLD_INITIALIZED}) {}
 
     void OnBeforeWorldInitialized() override
     {
@@ -293,7 +278,7 @@ public:
         LOG_INFO("server.loading", "╚══════════════════════════════════════════════════════════╝");
 
         uint32 oldMSTime = getMSTime();
-        
+
         LOG_INFO("server.loading", " ");
         LOG_INFO("server.loading", "Load Playerbots Config...");
 

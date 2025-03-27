@@ -13,7 +13,6 @@
 #include "PlayerbotAIConfig.h"
 #include "PlayerbotMgr.h"
 #include "RandomPlayerbotMgr.h"
-#include "PartybotMgr.h"
 #include "SharedValueContext.h"
 #include "Spell.h"
 #include "SpellMgr.h"
@@ -30,9 +29,6 @@ int strcmpi(char const* s1, char const* s2);
 
 #define GET_PLAYERBOT_AI(object) sPlayerbotsMgr->GetPlayerbotAI(object)
 #define GET_PLAYERBOT_MGR(object) sPlayerbotsMgr->GetPlayerbotMgr(object)
-
-#define GET_PARTYBOT_AI(object) sPartybotsMgr->GetPlayerbotAI(object)
-#define GET_PARTYBOT_MGR(object) sPartybotsMgr->GetPartybotMgr(object)
 
 #define AI_VALUE(type, name) context->GetValue<type>(name)->Get()
 #define AI_VALUE2(type, name, param) context->GetValue<type>(name, param)->Get()

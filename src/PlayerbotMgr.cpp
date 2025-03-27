@@ -10,6 +10,7 @@
 #include <istream>
 #include <string>
 
+#include "BroadcastHelper.h"
 #include "ChannelMgr.h"
 #include "CharacterCache.h"
 #include "CharacterPackets.h"
@@ -29,9 +30,6 @@
 #include "RandomPlayerbotMgr.h"
 #include "SharedDefines.h"
 #include "WorldSession.h"
-#include "ChannelMgr.h"
-#include "BroadcastHelper.h"
-#include "PlayerbotDbStore.h"
 #include "WorldSessionMgr.h"
 
 PlayerbotHolder::PlayerbotHolder() : PlayerbotAIBase(false) {}
@@ -40,6 +38,7 @@ class PlayerbotLoginQueryHolder : public LoginQueryHolder
 private:
     uint32 masterAccountId;
     PlayerbotHolder* playerbotHolder;
+
 public:
     PlayerbotLoginQueryHolder(PlayerbotHolder* playerbotHolder, uint32 masterAccount, uint32 accountId, ObjectGuid guid)
         : LoginQueryHolder(accountId, guid), masterAccountId(masterAccount), playerbotHolder(playerbotHolder)
@@ -64,14 +63,14 @@ void PlayerbotHolder::AddPlayerBot(ObjectGuid playerGuid, uint32 masterAccountId
     uint32 accountId = sCharacterCache->GetCharacterAccountIdByGuid(playerGuid);
     if (!accountId)
         return;
-    
+
     WorldSession* masterSession = masterAccountId ? sWorldSessionMgr->FindSession(masterAccountId) : nullptr;
     Player* masterPlayer = masterSession ? masterSession->GetPlayer() : nullptr;
 
     bool isRndbot = !masterAccountId;
     bool sameAccount = sPlayerbotAIConfig->allowAccountBots && accountId == masterAccountId;
     Guild* guild = masterPlayer ? sGuildMgr->GetGuildById(masterPlayer->GetGuildId()) : nullptr;
-    bool sameGuild = sPlayerbotAIConfig->allowGuildBots && guild && guild->GetMember(playerGuid); 
+    bool sameGuild = sPlayerbotAIConfig->allowGuildBots && guild && guild->GetMember(playerGuid);
     bool addClassBot = sRandomPlayerbotMgr->IsAddclassBot(playerGuid.GetCounter());
 
     bool allowed = true;
@@ -88,7 +87,8 @@ void PlayerbotHolder::AddPlayerBot(ObjectGuid playerGuid, uint32 masterAccountId
         PlayerbotMgr* mgr = GET_PLAYERBOT_MGR(masterPlayer);
         if (!mgr)
         {
-            LOG_DEBUG("playerbots", "PlayerbotMgr not found for master player with GUID: {}", masterPlayer->GetGUID().GetRawValue());
+            LOG_DEBUG("playerbots", "PlayerbotMgr not found for master player with GUID: {}",
+                      masterPlayer->GetGUID().GetRawValue());
             return;
         }
         uint32 count = mgr->GetPlayerbotsCount() + botLoading.size();
@@ -115,7 +115,7 @@ void PlayerbotHolder::AddPlayerBot(ObjectGuid playerGuid, uint32 masterAccountId
     }
 
     botLoading.insert(playerGuid);
-    
+
     if (WorldSession* masterSession = sWorldSessionMgr->FindSession(masterAccountId))
     {
         masterSession->AddQueryHolderCallback(CharacterDatabase.DelayQueryHolder(holder))
@@ -158,9 +158,10 @@ void PlayerbotHolder::HandlePlayerBotLoginCallback(PlayerbotLoginQueryHolder con
     Player* masterPlayer = masterSession ? masterSession->GetPlayer() : nullptr;
     if (masterSession && !masterPlayer)
     {
-        LOG_DEBUG("mod-playerbots", "Master session found but no player is associated for master account ID: {}", masterAccount);
+        LOG_DEBUG("mod-playerbots", "Master session found but no player is associated for master account ID: {}",
+                  masterAccount);
     }
-    
+
     sRandomPlayerbotMgr->OnPlayerLogin(bot);
     OnBotLogin(bot);
 
@@ -349,8 +350,8 @@ void PlayerbotHolder::LogoutPlayerBot(ObjectGuid guid)
             }
             else
             {
-                RemoveFromPlayerbotsMap(guid);     // deletes bot player ptr inside this WorldSession PlayerBotMap
-                delete botWorldSessionPtr;  // finally delete the bot's WorldSession
+                RemoveFromPlayerbotsMap(guid);  // deletes bot player ptr inside this WorldSession PlayerBotMap
+                delete botWorldSessionPtr;      // finally delete the bot's WorldSession
                 if (target)
                     delete target;
             }
@@ -359,7 +360,7 @@ void PlayerbotHolder::LogoutPlayerBot(ObjectGuid guid)
         else if (bot && (logout || !botWorldSessionPtr->isLogingOut()))
         {
             botAI->TellMaster("Goodbye!");
-            RemoveFromPlayerbotsMap(guid);                  // deletes bot player ptr inside this WorldSession PlayerBotMap
+            RemoveFromPlayerbotsMap(guid);           // deletes bot player ptr inside this WorldSession PlayerBotMap
             botWorldSessionPtr->LogoutPlayer(true);  // this will delete the bot Player object and PlayerbotAI object
             delete botWorldSessionPtr;               // finally delete the bot's WorldSession
         }
@@ -402,10 +403,7 @@ void PlayerbotHolder::DisablePlayerBot(ObjectGuid guid)
     }
 }
 
-void PlayerbotHolder::RemoveFromPlayerbotsMap(ObjectGuid guid)
-{
-    playerBots.erase(guid);   
-}
+void PlayerbotHolder::RemoveFromPlayerbotsMap(ObjectGuid guid) { playerBots.erase(guid); }
 
 Player* PlayerbotHolder::GetPlayerBot(ObjectGuid playerGuid) const
 {
@@ -430,7 +428,7 @@ void PlayerbotHolder::OnBotLogin(Player* const bot)
 
     sPlayerbotsMgr->AddPlayerbotData(bot, true);
     playerBots[bot->GetGUID()] = bot;
-    
+
     OnBotLoginInternal(bot);
 
     PlayerbotAI* botAI = GET_PLAYERBOT_AI(bot);
@@ -603,11 +601,13 @@ void PlayerbotHolder::OnBotLogin(Player* const bot)
                 case ChatChannelId::GUILD_RECRUITMENT:
                 {
                     char new_channel_name_buf[100];
-                    //3459 is ID for a zone named "City" (only exists for the sake of using its name)
-                    //Currently in magons TBC, if you switch zones, then you join "Trade - <zone>" and "GuildRecruitment - <zone>"
-                    //which is a core bug, should be "Trade - City" and "GuildRecruitment - City" in both 1.12 and TBC
-                    //but if you (actual player) logout in a city and log back in - you join "City" versions
-                    snprintf(new_channel_name_buf, 100, channel->pattern[locale], GET_PLAYERBOT_AI(bot)->GetLocalizedAreaName(GetAreaEntryByAreaID(3459)).c_str());
+                    // 3459 is ID for a zone named "City" (only exists for the sake of using its name)
+                    // Currently in magons TBC, if you switch zones, then you join "Trade - <zone>" and
+                    // "GuildRecruitment - <zone>" which is a core bug, should be "Trade - City" and "GuildRecruitment -
+                    // City" in both 1.12 and TBC but if you (actual player) logout in a city and log back in - you join
+                    // "City" versions
+                    snprintf(new_channel_name_buf, 100, channel->pattern[locale],
+                             GET_PLAYERBOT_AI(bot)->GetLocalizedAreaName(GetAreaEntryByAreaID(3459)).c_str());
                     new_channel = cMgr->GetJoinChannel(new_channel_name_buf, channel->ChannelID);
                     break;
                 }
@@ -677,12 +677,12 @@ std::string const PlayerbotHolder::ProcessBotCommand(std::string const cmd, Obje
 
     if (!bot)
         return "bot not found";
-    
+
     bool addClassBot = sRandomPlayerbotMgr->IsAddclassBot(guid.GetCounter());
 
     if (!addClassBot)
         return "ERROR: You can not use this command on non-addclass bot.";
-    
+
     if (!admin)
     {
         Player* master = ObjectAccessor::FindConnectedPlayer(masterguid);
@@ -738,14 +738,18 @@ std::string const PlayerbotHolder::ProcessBotCommand(std::string const cmd, Obje
                                         sPlayerbotAIConfig->autoInitEquipLevelLimitRatio;
                 PlayerbotFactory factory(bot, master->GetLevel(), ITEM_QUALITY_LEGENDARY, mixedGearScore);
                 factory.Randomize(false);
-                return "ok, gear score limit: " + std::to_string(mixedGearScore / PlayerbotAI::GetItemScoreMultiplier(ItemQualities(ITEM_QUALITY_EPIC))) +
+                return "ok, gear score limit: " +
+                       std::to_string(mixedGearScore /
+                                      PlayerbotAI::GetItemScoreMultiplier(ItemQualities(ITEM_QUALITY_EPIC))) +
                        "(for epic)";
             }
             else if (cmd.starts_with("init=") && sscanf(cmd.c_str(), "init=%d", &gs) != -1)
             {
                 PlayerbotFactory factory(bot, master->GetLevel(), ITEM_QUALITY_LEGENDARY, gs);
                 factory.Randomize(false);
-                return "ok, gear score limit: " + std::to_string(gs / PlayerbotAI::GetItemScoreMultiplier(ItemQualities(ITEM_QUALITY_EPIC))) + "(for epic)";
+                return "ok, gear score limit: " +
+                       std::to_string(gs / PlayerbotAI::GetItemScoreMultiplier(ItemQualities(ITEM_QUALITY_EPIC))) +
+                       "(for epic)";
             }
         }
 
@@ -784,6 +788,45 @@ std::string const PlayerbotHolder::ProcessBotCommand(std::string const cmd, Obje
     // }
 
     return "unknown command";
+}
+
+bool PlayerbotMgr::HandlePartybotMgrCommand(ChatHandler* handler, char const* args)
+{
+    if (!sPlayerbotAIConfig->enabled)
+    {
+        handler->PSendSysMessage("|cffff0000Playerbot system is currently disabled!");
+        return false;
+    }
+
+    WorldSession* m_session = handler->GetSession();
+    if (!m_session)
+    {
+        handler->PSendSysMessage("You may only add bots from an active session");
+        return false;
+    }
+
+    Player* player = m_session->GetPlayer();
+    PlayerbotMgr* mgr = GET_PLAYERBOT_MGR(player);
+    if (!mgr)
+    {
+        handler->PSendSysMessage("You cannot control bots yet");
+        return false;
+    }
+
+    handler->PSendSysMessage("Hello, {}!", player->GetName());
+
+    /*
+    std::vector<std::string> messages = mgr->HandlePlayerbotCommand(args, player);
+    if (messages.empty())
+        return true;
+
+    for (std::vector<std::string>::iterator i = messages.begin(); i != messages.end(); ++i)
+    {
+        handler->PSendSysMessage("{}", i->c_str());
+    }
+    */
+
+    return true;
 }
 
 bool PlayerbotMgr::HandlePlayerbotMgrCommand(ChatHandler* handler, char const* args)
@@ -1060,8 +1103,9 @@ std::vector<std::string> PlayerbotHolder::HandlePlayerbotCommand(char const* arg
             return messages;
         }
         uint8 teamId = master->GetTeamId(true);
-        const std::unordered_set<ObjectGuid> &guidCache = sRandomPlayerbotMgr->addclassCache[RandomPlayerbotMgr::GetTeamClassIdx(teamId == TEAM_ALLIANCE, claz)];
-        for (const ObjectGuid &guid: guidCache)
+        const std::unordered_set<ObjectGuid>& guidCache =
+            sRandomPlayerbotMgr->addclassCache[RandomPlayerbotMgr::GetTeamClassIdx(teamId == TEAM_ALLIANCE, claz)];
+        for (const ObjectGuid& guid : guidCache)
         {
             if (botLoading.find(guid) != botLoading.end())
                 continue;
