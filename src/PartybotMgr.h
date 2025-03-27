@@ -44,7 +44,7 @@ public:
     }
 
     PlayerbotAI* GetPlayerbotAI(Player* player);
-    PlayerbotMgr* GetPartybotMgr(Player* player);
+    PartybotMgr* GetPartybotMgr(Player* player);
 
 private:
     std::unordered_map<ObjectGuid, PlayerbotAIBase*> _playerbotsAIMap;
