@@ -193,8 +193,15 @@ public:
             }
         }
 
+        if (PartybotMgr* partybotMrg = GET_PARTYBOT_MGR(player))
+        {
+            if (channel->GetFlags() & 0x18)
+            {
+                partybotMrg->HandleCommand(type, msg);
+            }
+        }
+
         sRandomPlayerbotMgr->HandleCommand(type, msg, player);
-        sPartybotMgr->HandleCommand(type, msg, player);
     }
 
     bool OnPlayerBeforeCriteriaProgress(Player* player, AchievementCriteriaEntry const* /*criteria*/) override
