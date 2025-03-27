@@ -51,76 +51,74 @@
 #include "World.h"
 #include "RandomPlayerbotFactory.h"
 
-PartybotMgr::PartybotMgr() : PlayerbotHolder(), processTicks(0)
-{
-}
+PartybotMgr::PartybotMgr(Player* const master) : PlayerbotHolder(), master(master), lastErrorTell(0) {}
 
 PartybotMgr::~PartybotMgr() {}
 
-bool PartybotMgr::HandlePartybotMgrCommand(ChatHandler* handler, char const* args)
-{
-    if (!sPlayerbotAIConfig->enabled)
+bool PartybotMgr::HandlePartybotMgrCommand(ChatHandler * handler, char const* args)
     {
-        handler->PSendSysMessage("|cffff0000Playerbot system is currently disabled!");
-        return false;
-    }
+        if (!sPlayerbotAIConfig->enabled)
+        {
+            handler->PSendSysMessage("|cffff0000Playerbot system is currently disabled!");
+            return false;
+        }
 
-    WorldSession* m_session = handler->GetSession();
-    if (!m_session)
-    {
-        handler->PSendSysMessage("You may only add bots from an active session");
-        return false;
-    }
+        WorldSession* m_session = handler->GetSession();
+        if (!m_session)
+        {
+            handler->PSendSysMessage("You may only add bots from an active session");
+            return false;
+        }
 
-    Player* player = m_session->GetPlayer();
+        Player* player = m_session->GetPlayer();
 
-    handler->PSendSysMessage("|cffff0000Hello, {}!", player->GetName());
+        handler->PSendSysMessage("|cffff0000Hello, {}!", player->GetName());
 
-    /*
-    std::vector<std::string> messages = mgr->HandlePlayerbotCommand(args, player);
-    if (messages.empty())
+        /*
+        std::vector<std::string> messages = mgr->HandlePlayerbotCommand(args, player);
+        if (messages.empty())
+            return true;
+
+        for (std::vector<std::string>::iterator i = messages.begin(); i != messages.end(); ++i)
+        {
+            handler->PSendSysMessage("{}", i->c_str());
+        }
+        */
+
         return true;
-
-    for (std::vector<std::string>::iterator i = messages.begin(); i != messages.end(); ++i)
-    {
-        handler->PSendSysMessage("{}", i->c_str());
     }
-    */
 
-    return true;
-}
-
-PlayerbotAI* PartybotsMgr::GetPlayerbotAI(Player* player)
-{
-    if (!(sPlayerbotAIConfig->enabled) || !player)
+    PlayerbotAI* PartybotsMgr::GetPlayerbotAI(Player * player)
     {
+        if (!(sPlayerbotAIConfig->enabled) || !player)
+        {
+            return nullptr;
+        }
+        // if (player->GetSession()->isLogingOut() || player->IsDuringRemoveFromWorld()) {
+        //     return nullptr;
+        // }
+        auto itr = _partybotsMgrMap.find(player->GetGUID());
+        if (itr != _partybotsMgrMap.end())
+        {
+            if (itr->second->IsBotAI())
+                return reinterpret_cast<PlayerbotAI*>(itr->second);
+        }
+
         return nullptr;
     }
-    // if (player->GetSession()->isLogingOut() || player->IsDuringRemoveFromWorld()) {
-    //     return nullptr;
-    // }
-    auto itr = _partybotsMgrMap.find(player->GetGUID());
-    if (itr != _partybotsMgrMap.end())
-    {
-        if (itr->second->IsBotAI())
-            return reinterpret_cast<PlayerbotAI*>(itr->second);
-    }
 
-    return nullptr;
-}
-
-PartybotMgr* PartybotsMgr::GetPartybotMgr(Player* player)
-{
-    if (!(sPlayerbotAIConfig->enabled) || !player)
+    PartybotMgr* PartybotsMgr::GetPartybotMgr(Player * player)
     {
+        if (!(sPlayerbotAIConfig->enabled) || !player)
+        {
+            return nullptr;
+        }
+        auto itr = _partybotsMgrMap.find(player->GetGUID());
+        if (itr != _partybotsMgrMap.end())
+        {
+            if (!itr->second->IsBotAI())
+                return reinterpret_cast<PartybotMgr*>(itr->second);
+        }
+
         return nullptr;
     }
-    auto itr = _partybotsMgrMap.find(player->GetGUID());
-    if (itr != _partybotsMgrMap.end())
-    {
-        if (!itr->second->IsBotAI())
-            return reinterpret_cast<PartybotMgr*>(itr->second);
-    }
-
-    return nullptr;
-}
