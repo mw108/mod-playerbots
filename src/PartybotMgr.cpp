@@ -51,7 +51,7 @@
 #include "UpdateTime.h"
 #include "World.h"
 
-PlayerbotMgr::PlayerbotMgr(Player* const master) : PlayerbotHolder(), master(master) {}
+PartybotMgr::PartybotMgr(Player* const master) : PlayerbotHolder(), master(master) {}
 
 PartybotMgr::~PartybotMgr() {}
 
