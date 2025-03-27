@@ -51,14 +51,11 @@
 #include "UpdateTime.h"
 #include "World.h"
 
-PartybotMgr::PartybotMgr(Player* const master) : PlayerbotHolder(), master(master), lastErrorTell(0) {}
+PartybotMgr::PartybotMgr(Player* const master) : PlayerbotMgr(master) {}
 
 PartybotMgr::~PartybotMgr()
 {
-    /*
-    if (master)
-        sPlayerbotsMgr->RemovePlayerBotData(master->GetGUID(), false);
-    */
+    PlayerbotMgr::~PlayerbotMgr();
 }
 
 void PartybotMgr::HandleCommand(uint32 type, std::string const text)
