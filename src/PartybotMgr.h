@@ -51,6 +51,6 @@ private:
     std::unordered_map<ObjectGuid, PlayerbotAIBase*> _partybotsMgrMap;
 };
 
-#define sPlayerbotsMgr PartybotsMgr::instance()
+#define sPartybotsMgr PartybotsMgr::instance()
 
 #endif
