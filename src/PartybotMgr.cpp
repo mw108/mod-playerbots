@@ -89,3 +89,38 @@ bool PartybotMgr::HandlePartybotMgrCommand(ChatHandler* handler, char const* arg
 
     return true;
 }
+
+PlayerbotAI* PartybotsMgr::GetPlayerbotAI(Player* player)
+{
+    if (!(sPlayerbotAIConfig->enabled) || !player)
+    {
+        return nullptr;
+    }
+    // if (player->GetSession()->isLogingOut() || player->IsDuringRemoveFromWorld()) {
+    //     return nullptr;
+    // }
+    auto itr = _partybotsMgrMap.find(player->GetGUID());
+    if (itr != _partybotsMgrMap.end())
+    {
+        if (itr->second->IsBotAI())
+            return reinterpret_cast<PlayerbotAI*>(itr->second);
+    }
+
+    return nullptr;
+}
+
+PartybotMgr* PartybotsMgr::GetPartybotMgr(Player* player)
+{
+    if (!(sPlayerbotAIConfig->enabled) || !player)
+    {
+        return nullptr;
+    }
+    auto itr = _partybotsMgrMap.find(player->GetGUID());
+    if (itr != _partybotsMgrMap.end())
+    {
+        if (!itr->second->IsBotAI())
+            return reinterpret_cast<PartybotMgr*>(itr->second);
+    }
+
+    return nullptr;
+}
