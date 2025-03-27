@@ -13,6 +13,7 @@
 #include "PlayerbotAIConfig.h"
 #include "PlayerbotMgr.h"
 #include "RandomPlayerbotMgr.h"
+#include "PartybotMgr.h"
 #include "SharedValueContext.h"
 #include "Spell.h"
 #include "SpellMgr.h"

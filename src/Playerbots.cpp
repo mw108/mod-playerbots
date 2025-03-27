@@ -25,7 +25,6 @@
 #include "Metric.h"
 #include "PlayerScript.h"
 #include "PlayerbotAIConfig.h"
-#include "RandomPlayerbotMgr.h"
 #include "ScriptMgr.h"
 #include "cs_playerbots.h"
 #include "cs_partybots.h"
@@ -195,6 +194,7 @@ public:
         }
 
         sRandomPlayerbotMgr->HandleCommand(type, msg, player);
+        sPartybotMgr->HandleCommand(type, msg, player);
     }
 
     bool OnPlayerBeforeCriteriaProgress(Player* player, AchievementCriteriaEntry const* /*criteria*/) override

@@ -17,39 +17,20 @@ class PartybotMgr : public PlayerbotHolder
 public:
     PartybotMgr(Player* const master);
     virtual ~PartybotMgr();
+    static PartybotMgr* instance()
+    {
+        static PartybotMgr instance;
+        return &instance;
+    }
 
     static bool HandlePartybotMgrCommand(ChatHandler* handler, char const* args);
 
     Player* GetMaster() const { return master; };
 
-protected:
-
 private:
     Player* const master;
-    PlayerBotErrorMap errors;
-    time_t lastErrorTell;
 };
 
-class PartybotsMgr
-{
-public:
-    PartybotsMgr() {}
-    ~PartybotsMgr() {}
-
-    static PartybotsMgr* instance()
-    {
-        static PartybotsMgr instance;
-        return &instance;
-    }
-
-    PlayerbotAI* GetPlayerbotAI(Player* player);
-    PartybotMgr* GetPartybotMgr(Player* player);
-
-private:
-    std::unordered_map<ObjectGuid, PlayerbotAIBase*> _playerbotsAIMap;
-    std::unordered_map<ObjectGuid, PlayerbotAIBase*> _partybotsMgrMap;
-};
-
-#define sPartybotMgr PartybotsMgr::instance()
+#define sPartybotMgr PartybotMgr::instance()
 
 #endif
