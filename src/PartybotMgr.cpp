@@ -4,6 +4,7 @@
  */
 
 #include "RandomPlayerbotMgr.h"
+#include "PartybotMgr.h"
 
 #include <algorithm>
 #include <boost/thread/thread.hpp>
