@@ -28,6 +28,7 @@
 #include "RandomPlayerbotMgr.h"
 #include "ScriptMgr.h"
 #include "cs_playerbots.h"
+#include "cs_partybots.h"
 #include "cmath"
 
 class PlayerbotsDatabaseScript : public DatabaseScript
