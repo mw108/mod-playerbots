@@ -68,6 +68,7 @@ public:
     PlayerbotMgr(Player* const master);
     virtual ~PlayerbotMgr();
 
+    static bool HandlePartybotMgrCommand(ChatHandler* handler, char const* args);
     static bool HandlePlayerbotMgrCommand(ChatHandler* handler, char const* args);
     void HandleMasterIncomingPacket(WorldPacket const& packet);
     void HandleMasterOutgoingPacket(WorldPacket const& packet);

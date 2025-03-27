@@ -54,8 +54,8 @@ public:
         return PlayerbotMgr::HandlePartybotMgrCommand(handler, args);
     }
 
-        static bool
-        HandlePlayerbotCommand(ChatHandler* handler, char const* args)
+    static bool
+    HandlePlayerbotCommand(ChatHandler* handler, char const* args)
     {
         return PlayerbotMgr::HandlePlayerbotMgrCommand(handler, args);
     }
