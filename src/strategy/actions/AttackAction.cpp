@@ -55,14 +55,14 @@ bool AttackAction::Attack(Unit* target, bool with_pet /*true*/)
 {
     Unit* oldTarget = context->GetValue<Unit*>("current target")->Get();
     bool shouldMelee = bot->IsWithinMeleeRange(target) || botAI->IsMelee(bot);
-    
+
     bool sameTarget = oldTarget == target && bot->GetVictim() == target;
     bool inCombat = botAI->GetState() == BOT_STATE_COMBAT;
     bool sameAttackMode = bot->HasUnitState(UNIT_STATE_MELEE_ATTACKING) == shouldMelee;
     // there's no reason to do attack again
     if (sameTarget && inCombat && sameAttackMode)
         return false;
-    
+
     if (bot->GetMotionMaster()->GetCurrentMovementGeneratorType() == FLIGHT_MOTION_TYPE ||
         bot->HasUnitState(UNIT_STATE_IN_FLIGHT))
     {
@@ -105,12 +105,21 @@ bool AttackAction::Attack(Unit* target, bool with_pet /*true*/)
         return false;
     }
 
+    if ((bot->IsInSameGroupWith(target) || bot->IsInSameRaidWith(target)) && (botAI->GetAura("charm", target, false, false)))
+    {
+        msg << " is in my group or raid and is charmed";
+        if (verbose)
+            botAI->TellError(msg.str());
+
+        return false;
+    }
+
     if (!bot->IsWithinLOSInMap(target))
     {
         msg << " is not in my sight";
         if (verbose)
             botAI->TellError(msg.str());
-        
+
         return false;
     }
 
@@ -123,8 +132,7 @@ bool AttackAction::Attack(Unit* target, bool with_pet /*true*/)
         return false;
     }
 
-    if (sPlayerbotAIConfig->IsInPvpProhibitedZone(bot->GetZoneId())
-        && (target->IsPlayer() || target->IsPet()))
+    if (sPlayerbotAIConfig->IsInPvpProhibitedZone(bot->GetZoneId()) && (target->IsPlayer() || target->IsPet()))
     {
         if (verbose)
             botAI->TellError("I cannot attack others in PvP prohibited zones");
@@ -141,8 +149,6 @@ bool AttackAction::Attack(Unit* target, bool with_pet /*true*/)
     ObjectGuid guid = target->GetGUID();
     bot->SetSelection(target->GetGUID());
 
-    
-
     context->GetValue<Unit*>("old target")->Set(oldTarget);
 
     context->GetValue<Unit*>("current target")->Set(target);
@@ -157,13 +163,12 @@ bool AttackAction::Attack(Unit* target, bool with_pet /*true*/)
         bot->StopMoving();
     }
 
-
     if (IsMovingAllowed() && !bot->HasInArc(CAST_ANGLE_IN_FRONT, target))
     {
         sServerFacade->SetFacingTo(bot, target);
     }
     botAI->ChangeEngine(BOT_STATE_COMBAT);
-    
+
     bot->Attack(target, shouldMelee);
     /* prevent pet dead immediately in group */
     // if (bot->GetMap()->IsDungeon() && bot->GetGroup() && !target->IsInCombat()) {
