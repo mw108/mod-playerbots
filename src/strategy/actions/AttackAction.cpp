@@ -105,7 +105,7 @@ bool AttackAction::Attack(Unit* target, bool with_pet /*true*/)
         return false;
     }
 
-    if ((bot->IsInSameGroupWith(target->ToPlayer()) || bot->IsInSameRaidWith(target->ToPlayer())) && (botAI->GetAura("charm", target, false, false)))
+    if ((bot->IsInSameGroupWith((Player*)target) || bot->IsInSameRaidWith((Player*)target)) && (target->IsCharmed()))
     {
         msg << " is in my group or raid and is charmed";
         if (verbose)
