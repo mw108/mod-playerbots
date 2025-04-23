@@ -159,9 +159,9 @@ bool TradeStatusAction::CheckTrade()
     if (!bot->GetTradeData() || !trader || !trader->GetTradeData())
         return false;
 
+	bool isGivingItem = false;
     if (!botAI->HasActivePlayerMaster() && GET_PLAYERBOT_AI(bot->GetTrader()))
     {
-        bool isGivingItem = false;
         for (uint32 slot = 0; slot < TRADE_SLOT_TRADED_COUNT; ++slot)
         {
             Item* item = bot->GetTradeData()->GetItem((TradeSlots)slot);
@@ -255,6 +255,16 @@ bool TradeStatusAction::CheckTrade()
 
     if (!botMoney && !playerMoney)
         return true;
+
+    // Player just wants money from the bot
+    if (sPlayerbotAIConfig->allowPlayerbotsAtm && !isGivingItem && botMoney > playerMoney)
+    {
+        std::ostringstream out;
+        out << "You are a thief!";
+        botAI->TellMaster(out);
+        botAI->PlaySound(TEXT_EMOTE_SIGH);
+        return true;
+    }
 
     if (!botItemsMoney && !playerItemsMoney)
     {

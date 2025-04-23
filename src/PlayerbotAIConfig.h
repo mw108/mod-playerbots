@@ -348,6 +348,8 @@ public:
     uint32 useFlyMountAtMinLevel;
     uint32 useFastFlyMountAtMinLevel;
 
+    bool allowPlayerbotsAtm;
+
     std::string const GetTimestampStr();
     bool hasLog(std::string const fileName)
     {
