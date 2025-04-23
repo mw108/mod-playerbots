@@ -10,6 +10,14 @@ bool BwlOnyxiaScaleCloakAuraCheckAction::Execute(Event event)
 
 bool BwlOnyxiaScaleCloakAuraCheckAction::isUseful() { return !bot->HasAura(22683); }
 
+bool BwlFearwardAuraCheckAction::Execute(Event event)
+{
+    bot->AddAura(6346, bot);
+    return true;
+}
+
+bool BwlFearwardAuraCheckAction::isUseful() { return !bot->HasAura(6346); }
+
 bool BwlTurnOffSuppressionDeviceAction::Execute(Event event)
 {
     GuidVector gos = AI_VALUE(GuidVector, "nearest game objects");

@@ -16,6 +16,14 @@ public:
     bool isUseful() override;
 };
 
+class BwlFearwardAuraCheckAction : public Action
+{
+public:
+    BwlFearwardAuraCheckAction(PlayerbotAI* botAI) : Action(botAI, "bwl fearward aura check") {}
+    bool Execute(Event event) override;
+    bool isUseful() override;
+};
+
 class BwlTurnOffSuppressionDeviceAction : public Action
 {
 public:
