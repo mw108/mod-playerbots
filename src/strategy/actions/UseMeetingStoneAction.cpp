@@ -49,7 +49,7 @@ bool UseMeetingStoneAction::Execute(Event event)
 
     GameObjectTemplate const* goInfo = gameObject->GetGOInfo();
     if (!goInfo || goInfo->entry != 179944)
-		return false;
+        return false;
 
     return Teleport(master, bot);
 }
@@ -232,7 +232,7 @@ bool SummonAction::Teleport(Player* summoner, Player* player)
                         botAI->TellError("Neither summoner nor player is safe");
                         return false;
                     }
-    
+
                     bot->ResurrectPlayer(1.0f, false);
                     bot->SpawnCorpseBones();
                     botAI->TellMasterNoFacing("I live, again!");
@@ -248,7 +248,7 @@ bool SummonAction::Teleport(Player* summoner, Player* player)
                     PositionMap& posMap = AI_VALUE(PositionMap&, "position");
                     PositionInfo stayPosition = posMap["stay"];
 
-                    stayPosition.Set(x,y, z, mapId);
+                    stayPosition.Set(x, y, z, mapId);
                     posMap["stay"] = stayPosition;
                 }
 
@@ -257,6 +257,7 @@ bool SummonAction::Teleport(Player* summoner, Player* player)
             else
             {
                 botAI->TellError("Summoner is NOT within LOS");
+            }
         }
     }
     else
@@ -264,7 +265,7 @@ bool SummonAction::Teleport(Player* summoner, Player* player)
         botAI->TellError("Either summoner or player is already being teleported");
     }
 
-    if(summoner != player)
-         botAI->TellError("Not enough place to summon");
+    if (summoner != player)
+        botAI->TellError("Not enough place to summon");
     return false;
 }
