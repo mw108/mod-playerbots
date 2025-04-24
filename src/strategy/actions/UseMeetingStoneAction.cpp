@@ -227,12 +227,13 @@ bool SummonAction::Teleport(Player* summoner, Player* player)
 
                 if (bot->isDead() && revive)
                 {
+                    /*
                     if (!botAI->IsSafe(player) || !botAI->IsSafe(summoner))
                     {
                         botAI->TellError("Neither summoner nor player is safe");
-                        LOG_INFO("playerbots", "Player Map Id {}, Summoner Map Id: {}, Player Instance Id: {}, Summoner Instance Id: {}", player->GetMapId(), summoner->GetMapId(), player->GetInstanceId(), summoner->GetInstanceId());
                         return false;
                     }
+                    */
 
                     botAI->TellError("I'm dead and can be revived");
                     bot->ResurrectPlayer(1.0f, false);
