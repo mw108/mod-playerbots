@@ -233,10 +233,25 @@ bool SummonAction::Teleport(Player* summoner, Player* player)
                         return false;
                     }
 
+                    botAI->TellError("I'm dead and can be revived");
                     bot->ResurrectPlayer(1.0f, false);
                     bot->SpawnCorpseBones();
                     botAI->TellMasterNoFacing("I live, again!");
                     botAI->GetAiObjectContext()->GetValue<GuidVector>("prioritized targets")->Reset();
+                }
+                else
+                {
+                    botAI->TellError("Either I'm not dead or I cannot be revived");
+
+                    if (summoner->IsInCombat())
+                    {
+                        botAI->TellError("Summoner is in combat");
+                    }
+
+                    if (!summoner->IsAlive())
+                    {
+                        botAI->TellError("Summoner is not alive");
+                    }
                 }
 
                 player->GetMotionMaster()->Clear();
@@ -251,6 +266,8 @@ bool SummonAction::Teleport(Player* summoner, Player* player)
                     stayPosition.Set(x, y, z, mapId);
                     posMap["stay"] = stayPosition;
                 }
+
+                botAI->TellError("I have been summoned and (maybe) revived");
 
                 return true;
             }
