@@ -5,10 +5,6 @@
 bool BwlOnyxiaScaleCloakAuraCheckAction::Execute(Event event)
 {
     bot->AddAura(22683, bot);
-    if (Pet* pet = bot->GetPet())
-    {
-        pet->AddAura(22683, pet);
-    }
     return true;
 }
 
