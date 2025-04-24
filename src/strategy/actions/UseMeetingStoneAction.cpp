@@ -171,15 +171,21 @@ bool SummonAction::Teleport(Player* summoner, Player* player)
     // Player* master = GetMaster();
     if (!summoner)
         return false;
-    
+
+    botAI->TellError("Summoner is " + summoner->GetName());
+
     if (player->GetVehicle())
     {
         botAI->TellError("You cannot summon me while I'm on a vehicle");
         return false;
     }
 
+    botAI->TellError("I'm not in a vehicle");
+
     if (!summoner->IsBeingTeleported() && !player->IsBeingTeleported())
     {
+        botAI->TellError("Neither summoner nor player is being teleported");
+
         float followAngle = GetFollowAngle();
         for (float angle = followAngle - M_PI; angle <= followAngle + M_PI; angle += M_PI / 4)
         {
@@ -190,6 +196,8 @@ bool SummonAction::Teleport(Player* summoner, Player* player)
 
             if (summoner->IsWithinLOS(x, y, z))
             {
+                botAI->TellError("Summoner is within LOS");
+
                 if (sPlayerbotAIConfig
                         ->botRepairWhenSummon)  // .conf option to repair bot gear when summoned 0 = off, 1 = on
                     bot->DurabilityRepairAll(false, 1.0f, false);
@@ -220,7 +228,10 @@ bool SummonAction::Teleport(Player* summoner, Player* player)
                 if (bot->isDead() && revive)
                 {
                     if (!botAI->IsSafe(player) || !botAI->IsSafe(summoner))
+                    {
+                        botAI->TellError("Neither summoner nor player is safe");
                         return false;
+                    }
     
                     bot->ResurrectPlayer(1.0f, false);
                     bot->SpawnCorpseBones();
@@ -243,7 +254,14 @@ bool SummonAction::Teleport(Player* summoner, Player* player)
 
                 return true;
             }
+            else
+            {
+                botAI->TellError("Summoner is NOT within LOS");
         }
+    }
+    else
+    {
+        botAI->TellError("Either summoner or player is already being teleported");
     }
 
     if(summoner != player)
