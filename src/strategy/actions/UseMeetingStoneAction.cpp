@@ -166,6 +166,8 @@ bool SummonAction::SummonUsingNpcs(Player* summoner, Player* player)
 
 bool SummonAction::Teleport(Player* summoner, Player* player)
 {
+    botAI->TellError("Attempting to being summoned");
+
     // Player* master = GetMaster();
     if (!summoner)
         return false;
