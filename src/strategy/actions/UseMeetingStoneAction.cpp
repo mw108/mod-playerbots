@@ -230,10 +230,10 @@ bool SummonAction::Teleport(Player* summoner, Player* player)
                     if (!botAI->IsSafe(player) || !botAI->IsSafe(summoner))
                     {
                         botAI->TellError("Neither summoner nor player is safe");
-                        botAI->TellError(sprintf("Player Map Id: %u", player->GetMapId()));
-                        botAI->TellError(sprintf("Summoner Map Id: %u", player->GetMapId()));
-                        botAI->TellError(sprintf("Player Instance Id: %u", player->GetInstanceId()));
-                        botAI->TellError(sprintf("Summoner Instance Id: %u", player->GetInstanceId()));
+                        botAI->TellError("Player Map Id: " + std::to_string(player->GetMapId()));
+                        botAI->TellError("Summoner Map Id: " + std::to_string(player->GetMapId()));
+                        botAI->TellError("Player Instance Id: " + std::to_string(player->GetInstanceId()));
+                        botAI->TellError("Summoner Instance Id: " + std::to_string(player->GetInstanceId()));
                         return false;
                     }
 
