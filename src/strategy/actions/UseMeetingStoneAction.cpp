@@ -166,13 +166,9 @@ bool SummonAction::SummonUsingNpcs(Player* summoner, Player* player)
 
 bool SummonAction::Teleport(Player* summoner, Player* player)
 {
-    botAI->TellError("Attempting to being summoned");
-
     // Player* master = GetMaster();
     if (!summoner)
         return false;
-
-    botAI->TellError("Summoner is " + summoner->GetName());
 
     if (player->GetVehicle())
     {
@@ -180,12 +176,8 @@ bool SummonAction::Teleport(Player* summoner, Player* player)
         return false;
     }
 
-    botAI->TellError("I'm not in a vehicle");
-
     if (!summoner->IsBeingTeleported() && !player->IsBeingTeleported())
     {
-        botAI->TellError("Neither summoner nor player is being teleported");
-
         float followAngle = GetFollowAngle();
         for (float angle = followAngle - M_PI; angle <= followAngle + M_PI; angle += M_PI / 4)
         {
@@ -196,8 +188,6 @@ bool SummonAction::Teleport(Player* summoner, Player* player)
 
             if (summoner->IsWithinLOS(x, y, z))
             {
-                botAI->TellError("Summoner is within LOS");
-
                 if (sPlayerbotAIConfig
                         ->botRepairWhenSummon)  // .conf option to repair bot gear when summoned 0 = off, 1 = on
                     bot->DurabilityRepairAll(false, 1.0f, false);
@@ -235,25 +225,10 @@ bool SummonAction::Teleport(Player* summoner, Player* player)
                     }
                     */
 
-                    botAI->TellError("I'm dead and can be revived");
                     bot->ResurrectPlayer(1.0f, false);
                     bot->SpawnCorpseBones();
                     botAI->TellMasterNoFacing("I live, again!");
                     botAI->GetAiObjectContext()->GetValue<GuidVector>("prioritized targets")->Reset();
-                }
-                else
-                {
-                    botAI->TellError("Either I'm not dead or I cannot be revived");
-
-                    if (summoner->IsInCombat())
-                    {
-                        botAI->TellError("Summoner is in combat");
-                    }
-
-                    if (!summoner->IsAlive())
-                    {
-                        botAI->TellError("Summoner is not alive");
-                    }
                 }
 
                 player->GetMotionMaster()->Clear();
@@ -269,19 +244,9 @@ bool SummonAction::Teleport(Player* summoner, Player* player)
                     posMap["stay"] = stayPosition;
                 }
 
-                botAI->TellError("I have been summoned and (maybe) revived");
-
                 return true;
             }
-            else
-            {
-                botAI->TellError("Summoner is NOT within LOS");
-            }
         }
-    }
-    else
-    {
-        botAI->TellError("Either summoner or player is already being teleported");
     }
 
     if (summoner != player)
