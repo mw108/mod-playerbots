@@ -141,8 +141,13 @@ bool AttackRtiTargetAction::Execute(Event event)
         bool result = Attack(botAI->GetUnit(rtiTarget->GetGUID()));
         if (result)
         {
+            botAI->TellMaster("Attacking rti target " + botAI->GetUnit(rtiTarget->GetGUID())->GetName());
             context->GetValue<ObjectGuid>("pull target")->Set(rtiTarget->GetGUID());
             return true;
+        }
+        else
+        {
+            botAI->TellError("Failed to attack rti target");
         }
     }
     else
