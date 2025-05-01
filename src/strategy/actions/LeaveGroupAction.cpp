@@ -30,8 +30,8 @@ bool PartyCommandAction::Execute(Event event)
     Player* master = GetMaster();
     if (master && member == master->GetName())
         return Leave(bot);
-	
-	botAI->Reset();
+
+    botAI->Reset();
 
     return false;
 }
@@ -64,8 +64,8 @@ bool UninviteAction::Execute(Event event)
         if (bot->GetGUID() == guid)
             return Leave(bot);
     }
-	
-	botAI->Reset();
+
+    botAI->Reset();
 
     return false;
 }
@@ -86,6 +86,13 @@ bool LeaveGroupAction::Leave(Player* player)
     if (!shouldStay)
     {
         bot->RemoveFromGroup();
+
+        // Logout and delete playerbot from database if it's an addclass bot
+        if (isAddclassBot)
+        {
+            sRandomPlayerbotMgr->LogoutPlayerBot(bot->GetGUID());
+            sRandomPlayerbotMgr->Remove(bot);
+        }
     }
 
     if (randomBot)
@@ -97,14 +104,6 @@ bool LeaveGroupAction::Leave(Player* player)
         botAI->ResetStrategies(!randomBot);
 
     botAI->Reset();
-
-    // Logout and delete playerbot from database if it's an addclass bot
-    if (isAddclassBot)
-    {
-        sRandomPlayerbotMgr->LogoutPlayerBot(bot->GetGUID());
-        sRandomPlayerbotMgr->Clear(bot);
-        sRandomPlayerbotMgr->Remove(bot);
-    }
 
     return true;
 }
@@ -171,8 +170,8 @@ bool LeaveFarAwayAction::isUseful()
     {
         return true;
     }
-	
-	botAI->Reset();
+
+    botAI->Reset();
 
     return false;
 }
