@@ -95,7 +95,7 @@ bool LeaveGroupAction::Leave(Player* player)
             {
                 botAI->TellMaster("Logging out and deleting myself", PLAYERBOT_SECURITY_TALK);
                 masterBotMgr->LogoutPlayerBot(bot->GetGUID());
-                masterBotMgr->Remove(bot);
+                //masterBotMgr->Remove(bot);
             }
         }
     }
