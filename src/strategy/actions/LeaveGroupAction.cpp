@@ -90,8 +90,13 @@ bool LeaveGroupAction::Leave(Player* player)
         // Logout and delete playerbot from database if it's an addclass bot
         if (isAddclassBot)
         {
-            sRandomPlayerbotMgr->LogoutPlayerBot(bot->GetGUID());
-            sRandomPlayerbotMgr->Remove(bot);
+            PlayerbotMgr* masterBotMgr = GET_PLAYERBOT_MGR(botAI->GetMaster());
+            if (masterBotMgr)
+            {
+                botAI->TellMaster("Logging out and deleting myself", PLAYERBOT_SECURITY_TALK);
+                masterBotMgr->LogoutPlayerBot(bot->GetGUID());
+                masterBotMgr->Remove(bot);
+            }
         }
     }
 
