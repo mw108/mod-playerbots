@@ -1,8 +1,24 @@
 #include "RaidAq20Actions.h"
 
+#include "LastMovementValue.h"
+#include "ObjectGuid.h"
+#include "PlayerbotAIConfig.h"
 #include "Playerbots.h"
+#include "RaidAq20BossHelper.h"
+#include "RaidAq20Strategy.h"
 #include "RaidAq20Utils.h"
+#include "ScriptedCreature.h"
+#include "SharedDefines.h"
 
+bool KurinnaxxMoveAwayFromSandTrapAction::Execute(Event event)
+{
+    if (Unit* boss = AI_VALUE2(Unit*, "find target", "kurinnaxx"))
+    {
+        return MoveTo(bot->GetMapId(), boss->GetPositionX() + frand(-9.0f, 9.0f),
+                      boss->GetPositionY() + frand(-9.0f, 9.0f), boss->GetPositionZ());
+    }
+    return false;
+}
 
 bool Aq20UseCrystalAction::Execute(Event event)
 {
@@ -12,17 +28,14 @@ bool Aq20UseCrystalAction::Execute(Event event)
         {
             float botDist = bot->GetDistance(crystal);
             if (botDist > INTERACTION_DISTANCE)
-                return MoveTo(bot->GetMapId(),
-                    crystal->GetPositionX() + frand(-3.5f, 3.5f),
-                    crystal->GetPositionY() + frand(-3.5f, 3.5f),
-                    crystal->GetPositionZ());
+                return MoveTo(bot->GetMapId(), crystal->GetPositionX() + frand(-3.5f, 3.5f),
+                              crystal->GetPositionY() + frand(-3.5f, 3.5f), crystal->GetPositionZ());
 
             // if we're already in range just wait here until it's time to activate crystal
             SetNextMovementDelay(500);
 
             // don't activate crystal if boss too far or its already been activated
-            if (boss->GetDistance(crystal) > 25.0f ||
-                crystal->HasGameObjectFlag(GO_FLAG_IN_USE))
+            if (boss->GetDistance(crystal) > 25.0f || crystal->HasGameObjectFlag(GO_FLAG_IN_USE))
                 return false;
 
             // don't activate crystal if boss doesn't have buff yet AND isn't going to have it soon

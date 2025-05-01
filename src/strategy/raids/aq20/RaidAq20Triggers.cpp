@@ -1,8 +1,60 @@
 #include "RaidAq20Triggers.h"
 
-#include "SharedDefines.h"
+#include "EventMap.h"
+#include "Playerbots.h"
 #include "RaidAq20Utils.h"
+#include "ScriptedCreature.h"
+#include "SharedDefines.h"
+#include "Trigger.h"
 
+bool MoveBehindTheBossTrigger::IsActive()
+{
+    Unit* kurinnaxx = AI_VALUE2(Unit*, "find target", "kurinnaxx");
+    if (!kurinnaxx)
+    {
+        return false;
+    }
+
+    Unit* boss = kurinnaxx;
+
+    // Don't move if boss is already targeting the bot
+    if (boss->GetTarget() == bot->GetGUID())
+    {
+        return false;
+    }
+
+    // Don't move if bot is the main tank
+    if (botAI->IsMainTank(bot))
+    {
+        return false;
+    }
+
+    // Don't move if bot is ranged
+    if (botAI->IsRanged(bot))
+    {
+        return false;
+    }
+
+    return IsNotBehindTargetTrigger::IsActive();
+
+    /*
+    // If bot is the assist tank, move to the flank of the boss
+    float modifier = 1.0f;
+    if (botAI->IsAssistTank(bot))
+    {
+        modifier = 2.0f;
+    }
+
+    // Position* pos = boss->GetPosition();
+    float orientation = boss->GetOrientation() + M_PI + (delta_angle / modifier);
+    float x = boss->GetPositionX();
+    float y = boss->GetPositionY();
+    float z = boss->GetPositionZ();
+    float rx = x + cos(orientation) * distance;
+    float ry = y + sin(orientation) * distance;
+    return MoveTo(bot->GetMapId(), rx, ry, z, false, false, false, false, MovementPriority::MOVEMENT_COMBAT);
+    */
+}
 
 bool Aq20MoveToCrystalTrigger::IsActive()
 {
@@ -33,5 +85,36 @@ bool Aq20MoveToCrystalTrigger::IsActive()
             }
         }
     }
+    return false;
+}
+
+bool KurinnaxxTankMortalWoundTrigger::IsActive()
+{
+    Unit* kurinnaxx = AI_VALUE2(Unit*, "find target", "kurinnaxx");
+    if (!kurinnaxx)
+    {
+        return false;
+    }
+
+    Unit* boss = kurinnaxx;
+    if (boss->IsInCombat())
+    {
+        if (!botAI->IsAssistTankOfIndex(bot, 0))
+        {
+            return false;
+        }
+        Unit* mt = AI_VALUE(Unit*, "main tank");
+        if (!mt)
+        {
+            return false;
+        }
+        Aura* aura = botAI->GetAura("mortal wound", mt, false, true);
+        if (!aura || aura->GetStackAmount() < 3)
+        {
+            return false;
+        }
+        return true;
+    }
+
     return false;
 }

@@ -1,9 +1,21 @@
 #ifndef _PLAYERBOT_RAIDAQ20ACTIONS_H
 #define _PLAYERBOT_RAIDAQ20ACTIONS_H
 
+#include "Action.h"
+#include "AttackAction.h"
+#include "GenericActions.h"
 #include "MovementActions.h"
 #include "PlayerbotAI.h"
 #include "Playerbots.h"
+#include "RaidAq20BossHelper.h"
+#include "RaidAq20Scripts.h"
+
+class KurinnaxxMoveAwayFromSandTrapAction : public MovementAction
+{
+public:
+    KurinnaxxMoveAwayFromSandTrapAction(PlayerbotAI* botAI, std::string const name = "kurinnaxx move away from sand trap") : MovementAction(botAI, name) {}
+    bool Execute(Event event) override;
+};
 
 class Aq20UseCrystalAction : public MovementAction
 {
