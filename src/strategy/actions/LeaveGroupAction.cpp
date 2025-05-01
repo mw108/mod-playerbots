@@ -80,6 +80,7 @@ bool LeaveGroupAction::Leave(Player* player)
 
     botAI->TellMaster("Goodbye!", PLAYERBOT_SECURITY_TALK);
 
+    bool isAddclassBot = sRandomPlayerbotMgr->IsAddclassBot(bot);
     bool randomBot = sRandomPlayerbotMgr->IsRandomBot(bot);
     bool shouldStay = randomBot && bot->GetGroup() && player == bot;
     if (!shouldStay)
@@ -96,6 +97,14 @@ bool LeaveGroupAction::Leave(Player* player)
         botAI->ResetStrategies(!randomBot);
 
     botAI->Reset();
+
+    // Logout and delete playerbot from database if it's an addclass bot
+    if (isAddclassBot)
+    {
+        sRandomPlayerbotMgr->LogoutPlayerBot(bot->GetGUID());
+        sRandomPlayerbotMgr->Clear(bot);
+        sRandomPlayerbotMgr->Remove(bot);
+    }
 
     return true;
 }
