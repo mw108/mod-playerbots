@@ -24,14 +24,14 @@ public:
 class Aq40AttackVeknilashAction : public MovementAction
 {
 public:
-    Aq40AttackVeknilashAction(PlayerbotAI* botAI) : Action(botAI, "aq40 attack veknilash") {}
+    Aq40AttackVeknilashAction(PlayerbotAI* botAI, std::string const name = "aq40 attack veknilash") : MovementAction(botAI, name) {}
     bool Execute(Event event) override;
 };
 
 class Aq40AttackVeklorAction : public MovementAction
 {
 public:
-    Aq40AttackVeklorAction(PlayerbotAI* botAI) : Action(botAI, "aq40 attack veklor") {}
+    Aq40AttackVeklorAction(PlayerbotAI* botAI, std::string const name = "aq40 attack veklor") : MovementAction(botAI, name) {}
     bool Execute(Event event) override;
 };
 
