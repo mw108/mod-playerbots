@@ -21,14 +21,14 @@ public:
     bool isUseful() override;
 };
 
-class Aq40AttackVeknilashAction : public Action
+class Aq40AttackVeknilashAction : public MovementAction
 {
 public:
     Aq40AttackVeknilashAction(PlayerbotAI* botAI) : Action(botAI, "aq40 attack veknilash") {}
     bool Execute(Event event) override;
 };
 
-class Aq40AttackVeklorAction : public Action
+class Aq40AttackVeklorAction : public MovementAction
 {
 public:
     Aq40AttackVeklorAction(PlayerbotAI* botAI) : Action(botAI, "aq40 attack veklor") {}
