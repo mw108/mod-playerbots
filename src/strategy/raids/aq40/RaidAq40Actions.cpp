@@ -26,7 +26,7 @@ bool Aq40AttackVeknilashAction::Execute(Event event)
 {
     if (Unit* boss = AI_VALUE2(Unit*, "find target", "emperor vek'nilash"))
     {
-        float botDist = bot->GetDistance(crystal);
+        float botDist = bot->GetDistance(boss);
         if (botDist > INTERACTION_DISTANCE)
             return MoveTo(bot->GetMapId(), boss->GetPositionX(), boss->GetPositionY(), boss->GetPositionZ());
         bot->Attack(boss);
@@ -39,7 +39,7 @@ bool Aq40AttackVeklorAction::Execute(Event event)
 {
     if (Unit* boss = AI_VALUE2(Unit*, "find target", "emperor vek'lor"))
     {
-        float botDist = bot->GetDistance(crystal);
+        float botDist = bot->GetDistance(boss);
         if (botDist > 20.0f)
             return MoveTo(bot->GetMapId(), boss->GetPositionX(), boss->GetPositionY(), boss->GetPositionZ());
         bot->Attack(boss);
