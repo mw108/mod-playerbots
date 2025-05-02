@@ -4,6 +4,8 @@
 
 void RaidAq40Strategy::InitTriggers(std::vector<TriggerNode*>& triggers)
 {
+    botAI->TellMasterNoFace("I'm in AQ40");
+
     triggers.push_back(new TriggerNode(
         "often", NextAction::array(0, new NextAction("aq40 check shadow protection potion buff", ACTION_RAID), NULL)));
 
