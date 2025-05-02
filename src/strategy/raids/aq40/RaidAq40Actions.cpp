@@ -29,7 +29,7 @@ bool Aq40AttackVeknilashAction::Execute(Event event)
         float botDist = bot->GetDistance(boss);
         if (botDist > INTERACTION_DISTANCE)
             return MoveTo(bot->GetMapId(), boss->GetPositionX(), boss->GetPositionY(), boss->GetPositionZ());
-        bot->Attack(boss);
+        bot->Attack(boss, true);
         return true;
     }
     return false;
@@ -42,7 +42,7 @@ bool Aq40AttackVeklorAction::Execute(Event event)
         float botDist = bot->GetDistance(boss);
         if (botDist > 20.0f)
             return MoveTo(bot->GetMapId(), boss->GetPositionX(), boss->GetPositionY(), boss->GetPositionZ());
-        bot->Attack(boss);
+        bot->Attack(boss, false);
         return true;
     }
     return false;
