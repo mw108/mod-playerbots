@@ -21,6 +21,19 @@ bool Aq40CheckNatureProtectionPotionBuffAction::Execute(Event event)
 
 bool Aq40CheckNatureProtectionPotionBuffAction::isUseful() { return !bot->HasAura(17546); }
 
+bool Aq40CheckFearWardBuffAction::Execute(Event event)
+{
+    LOG_INFO("playerbots", "Applying fear ward buff to bot {}", bot->GetName().c_str());
+    bot->AddAura(6346, bot);
+    if (Pet* pet = bot->GetPet())
+    {
+        pet->AddAura(6346, pet);
+    }
+    return true;
+}
+
+bool Aq40CheckFearWardBuffAction::isUseful() { return !bot->HasAura(6346); }
+
 bool Aq40AttackVeknilashAction::Execute(Event event)
 {
     if (Unit* boss = AI_VALUE2(Unit*, "find target", "emperor vek'nilash"))

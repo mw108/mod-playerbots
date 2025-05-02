@@ -24,6 +24,14 @@ public:
     bool isUseful() override;
 };
 
+class Aq40CheckFearWardBuffAction : public Action
+{
+public:
+    Aq40CheckFearWardBuffAction(PlayerbotAI* botAI) : Action(botAI, "aq40 fear ward buff check") {}
+    bool Execute(Event event) override;
+    bool isUseful() override;
+};
+
 class Aq40AttackVeknilashAction : public MovementAction
 {
 public:
