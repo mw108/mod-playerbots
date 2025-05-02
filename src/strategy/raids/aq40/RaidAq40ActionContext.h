@@ -10,6 +10,8 @@ class RaidAq40ActionContext : public NamedObjectContext<Action>
 public:
     RaidAq40ActionContext()
     {
+        LOG_INFO("playerbots", "RaidAq40ActionContext created");
+
         creators["aq40 check shadow protection potion buff"] = &RaidAq40ActionContext::aq40_check_shadow_protection_potion_buff;
         creators["aq40 check nature protection potion buff"] = &RaidAq40ActionContext::aq40_check_nature_protection_potion_buff;
         creators["aq40 attack veknilash"] = &RaidAq40ActionContext::aq40_attack_veknilash;

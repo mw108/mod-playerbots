@@ -1,12 +1,9 @@
 #include "RaidAq40Strategy.h"
 
-#include "Log.h"
 #include "Strategy.h"
 
 void RaidAq40Strategy::InitTriggers(std::vector<TriggerNode*>& triggers)
 {
-    LOG_INFO("playerbots", "Init AQ40 triggers");
-
     triggers.push_back(new TriggerNode(
         "often", NextAction::array(0, new NextAction("aq40 check shadow protection potion buff", ACTION_RAID), NULL)));
 
