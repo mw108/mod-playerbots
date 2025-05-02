@@ -7,6 +7,7 @@ bool Aq40CheckShadowProtectionPotionBuffAction::Execute(Event event)
 {
     botAI->TellMasterNoFacing("Applying shadow protection buff");
     bot->AddAura(17548, bot);
+    bot->AddAura(6346, bot);
     return true;
 }
 
