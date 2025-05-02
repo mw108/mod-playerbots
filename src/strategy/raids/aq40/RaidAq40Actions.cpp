@@ -5,7 +5,7 @@
 
 bool Aq40CheckShadowProtectionPotionBuffAction::Execute(Event event)
 {
-    bot->TellMaster("Applying shadow protection buff", PLAYERBOT_SECURITY_TALK);
+    botAI->TellMaster("Applying shadow protection buff", PLAYERBOT_SECURITY_TALK);
     bot->AddAura(17548, bot);
     bot->AttackStop();
     return true;
@@ -15,7 +15,7 @@ bool Aq40CheckShadowProtectionPotionBuffAction::isUseful() { return !bot->HasAur
 
 bool Aq40CheckNatureProtectionPotionBuffAction::Execute(Event event)
 {
-    bot->TellMaster("Applying nature protection buff", PLAYERBOT_SECURITY_TALK);
+    botAI->TellMaster("Applying nature protection buff", PLAYERBOT_SECURITY_TALK);
     bot->AddAura(17546, bot);
     return true;
 }
