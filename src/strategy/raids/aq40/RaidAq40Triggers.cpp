@@ -21,14 +21,14 @@ bool Aq40MoveToVeknilashTrigger::IsActive()
             float botDist = bot->GetDistance(boss);
             if (botDist < 5.0f)
             {
-                botAI->TellMasterNoFacing("Moving to Emperor Vek'nilash");
+                botAI->TellMaster("Moving to Emperor Vek'nilash");
                 return true;
             }
         }
     }
     else
     {
-        botAI->TellMasterNoFacing("Emperor Vek'nilash not found");
+        botAI->TellMaster("Emperor Vek'nilash not found");
     }
     return false;
 }
@@ -43,20 +43,21 @@ bool Aq40MoveToVeklorTrigger::IsActive()
                             bot->IsClass(CLASS_DRUID);
             bool isTank = botAI->IsTank(bot);
             bool isHealer = botAI->IsHeal(bot);
-            if (!isCaster || isTank || isHealer)
+            bool isRanged = botAI->IsRangedDps(bot);
+            if (!isCaster || !isRanged || isTank || isHealer)
                 return false;
 
             float botDist = bot->GetDistance(boss);
             if (botDist < 20.0f)
             {
-                botAI->TellMasterNoFacing("Moving to Emperor Vek'lor");
+                botAI->TellMaster("Moving to Emperor Vek'lor");
                 return true;
             }
         }
     }
     else
     {
-        botAI->TellMasterNoFacing("Emperor Vek'lor not found");
+        botAI->TellMaster("Emperor Vek'lor not found");
     }
     return false;
 }
