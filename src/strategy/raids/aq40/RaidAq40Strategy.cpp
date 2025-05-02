@@ -11,8 +11,8 @@ void RaidAq40Strategy::InitTriggers(std::vector<TriggerNode*>& triggers)
         "often", NextAction::array(0, new NextAction("aq40 check nature protection potion buff", ACTION_RAID), NULL)));
 
     triggers.push_back(new TriggerNode(
-        "often", NextAction::array(0, new NextAction("aq40 move physicals to veknilash", ACTION_RAID), nullptr)));
+        "aq40 move to veknilash", NextAction::array(0, new NextAction("aq40 attack veknilash", ACTION_RAID), nullptr)));
 
     triggers.push_back(new TriggerNode(
-        "often", NextAction::array(0, new NextAction("aq40 move casters to veklor", ACTION_RAID), nullptr)));
+        "aq40 move to veklor", NextAction::array(0, new NextAction("aq40 attack veklor", ACTION_RAID), nullptr)));
 }
