@@ -1,6 +1,9 @@
 #ifndef _PLAYERBOT_RAIDAQ40ACTIONS_H
 #define _PLAYERBOT_RAIDAQ40ACTIONS_H
 
+#include "Action.h"
+#include "AttackAction.h"
+#include "GenericActions.h"
 #include "MovementActions.h"
 #include "PlayerbotAI.h"
 #include "Playerbots.h"
