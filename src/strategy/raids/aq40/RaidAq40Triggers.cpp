@@ -21,14 +21,14 @@ bool Aq40MoveToVeknilashTrigger::IsActive()
             float botDist = bot->GetDistance(boss);
             if (botDist < 5.0f)
             {
-                botAI->botAI->TellMasterNoFacing("Moving to Emperor Vek'nilash");
+                botAI->TellMasterNoFacing("Moving to Emperor Vek'nilash");
                 return true;
             }
         }
     }
     else
     {
-        botAI->botAI->TellMasterNoFacing("Emperor Vek'nilash not found");
+        botAI->TellMasterNoFacing("Emperor Vek'nilash not found");
     }
     return false;
 }
@@ -49,14 +49,14 @@ bool Aq40MoveToVeklorTrigger::IsActive()
             float botDist = bot->GetDistance(boss);
             if (botDist < 20.0f)
             {
-                botAI->botAI->TellMasterNoFacing("Moving to Emperor Vek'lor");
+                botAI->TellMasterNoFacing("Moving to Emperor Vek'lor");
                 return true;
             }
         }
     }
     else
     {
-        botAI->botAI->TellMasterNoFacing("Emperor Vek'lor not found");
+        botAI->TellMasterNoFacing("Emperor Vek'lor not found");
     }
     return false;
 }
