@@ -56,7 +56,7 @@ bool Aq40AttackVeknilashAction::Execute(Event event)
     Unit* target = context->GetValue<Unit*>("current target")->Get();
     Unit* boss = AI_VALUE2(Unit*, "find target", "emperor vek'nilash");
 
-    if (boss && boss->IsInCombat() && target != boss && ( isTank || isMelee ) )
+    if (boss && boss->IsInCombat() && ( isTank || isMelee ) )
     {
         return Attack(boss);
     }
@@ -76,7 +76,7 @@ bool Aq40AttackVeklorAction::Execute(Event event)
     Unit* target = context->GetValue<Unit*>("current target")->Get();
     Unit* boss = AI_VALUE2(Unit*, "find target", "emperor vek'lor");
 
-    if (boss && boss->IsInCombat() && target != boss && isCaster)
+    if (boss && boss->IsInCombat() && isCaster)
     {
         return Attack(boss);
     }
