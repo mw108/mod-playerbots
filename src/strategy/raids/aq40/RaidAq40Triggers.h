@@ -8,14 +8,14 @@
 class Aq40EmperorVeknilashTrigger : public Trigger
 {
 public:
-    Aq40MoveToVeknilashTrigger(PlayerbotAI* botAI) : Trigger(botAI, "emperor vek'nilash") {}
+    Aq40EmperorVeknilashTrigger(PlayerbotAI* botAI) : Trigger(botAI, "emperor vek'nilash") {}
     bool IsActive() override;
 };
 
 class Aq40EmperorVeklorTrigger : public Trigger
 {
 public:
-    Aq40MoveToVeklorTrigger(PlayerbotAI* botAI) : Trigger(botAI, "emperor vek'lor") {}
+    Aq40EmperorVeklorTrigger(PlayerbotAI* botAI) : Trigger(botAI, "emperor vek'lor") {}
     bool IsActive() override;
 };
 
