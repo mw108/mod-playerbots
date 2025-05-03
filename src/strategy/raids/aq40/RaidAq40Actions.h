@@ -8,36 +8,14 @@
 #include "PlayerbotAI.h"
 #include "Playerbots.h"
 
-class Aq40CheckShadowProtectionPotionBuffAction : public Action
+class Aq40CheckBuffsAction : public Action
 {
 public:
-    Aq40CheckShadowProtectionPotionBuffAction(PlayerbotAI* botAI) : Action(botAI, "aq40 shadow protection potion buff check") {}
+    Aq40CheckBuffsAction(PlayerbotAI* botAI) : Action(botAI, "aq40 buffs check") {}
     bool Execute(Event event) override;
     bool isUseful() override;
-};
-
-class Aq40CheckNatureProtectionPotionBuffAction : public Action
-{
-public:
-    Aq40CheckNatureProtectionPotionBuffAction(PlayerbotAI* botAI) : Action(botAI, "aq40 nature protection potion buff check") {}
-    bool Execute(Event event) override;
-    bool isUseful() override;
-};
-
-class Aq40CheckFrostProtectionPotionBuffAction : public Action
-{
-public:
-    Aq40CheckFrostProtectionPotionBuffAction(PlayerbotAI* botAI) : Action(botAI, "aq40 frost protection potion buff check") {}
-    bool Execute(Event event) override;
-    bool isUseful() override;
-};
-
-class Aq40CheckFearWardBuffAction : public Action
-{
-public:
-    Aq40CheckFearWardBuffAction(PlayerbotAI* botAI) : Action(botAI, "aq40 fear ward buff check") {}
-    bool Execute(Event event) override;
-    bool isUseful() override;
+protected:
+    void AddBuff(int32 spellId);
 };
 
 class Aq40AttackVeknilashAction : public AttackAction

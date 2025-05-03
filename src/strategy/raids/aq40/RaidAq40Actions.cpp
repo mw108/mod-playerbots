@@ -3,48 +3,60 @@
 #include "Playerbots.h"
 #include "RaidAq40Utils.h"
 
-bool Aq40CheckShadowProtectionPotionBuffAction::Execute(Event event)
+void Aq40CheckBuffsAction::AddBuff(int32 spellId)
 {
-    LOG_INFO("aq40_strategies", "Applying shadow protection buff to bot {}", bot->GetName().c_str());
-    bot->AddAura(17548, bot);
-    return true;
-}
-
-bool Aq40CheckShadowProtectionPotionBuffAction::isUseful() { return !bot->HasAura(17548); }
-
-bool Aq40CheckNatureProtectionPotionBuffAction::Execute(Event event)
-{
-    LOG_INFO("aq40_strategies", "Applying nature protection buff to bot {}", bot->GetName().c_str());
-    bot->AddAura(17546, bot);
-    return true;
-}
-
-bool Aq40CheckNatureProtectionPotionBuffAction::isUseful() { return !bot->HasAura(17546); }
-
-bool Aq40CheckFrostProtectionPotionBuffAction::Execute(Event event)
-{
-    LOG_INFO("aq40_strategies", "Applying frost protection buff to bot {}", bot->GetName().c_str());
-    bot->AddAura(17544, bot);
-    return true;
-}
-
-bool Aq40CheckFrostProtectionPotionBuffAction::isUseful() { return !bot->HasAura(17544); }
-
-bool Aq40CheckFearWardBuffAction::Execute(Event event)
-{
-    LOG_INFO("aq40_strategies", "Applying fear ward buff to bot {}", bot->GetName().c_str());
-    bot->AddAura(6346, bot);
-    if (Pet* pet = bot->GetPet())
+    if (!bot->HasAura(spellId))
     {
-        pet->AddAura(6346, pet);
+        bot->AddAura(spellId, bot);
+        if (Pet* pet = bot->GetPet())
+        {
+            pet->AddAura(spellId, pet);
+        }
     }
+}
+
+bool Aq40CheckBuffsAction::Execute(Event event)
+{
+    AddBuff(27683); // Prayer of Shadow Protection
+    AddBuff(23737); // Dark Moon Fair stamina
+    AddBuff(23768); // Dark Moon Fair damage
+    AddBuff(23769); // Dark Moon Fair resistance
+    AddBuff(24425); // Zul'Gurub
+    AddBuff(22888); // Onyxia
+    AddBuff(17626); // Flask of Titans
+    AddBuff(17543); // Fire protection
+    AddBuff(17549); // Arcane protection
+    AddBuff(17548); // Shadow protection
+    AddBuff(17546); // Nature protection
+    AddBuff(17544); // Frost protection
+    AddBuff(6346);  // Fear ward
     return true;
 }
 
-bool Aq40CheckFearWardBuffAction::isUseful() { return !bot->HasAura(6346); }
+bool Aq40CheckBuffsAction::isUseful()
+{
+    return !bot->HasAura(27683) ||  // Prayer of Shadow Protection
+           !bot->HasAura(23737) ||  // Dark Moon Fair stamina
+           !bot->HasAura(23768) ||  // Dark Moon Fair damage
+           !bot->HasAura(23769) ||  // Dark Moon Fair resistance
+           !bot->HasAura(24425) ||  // Zul'Gurub
+           !bot->HasAura(22888) ||  // Onyxia
+           !bot->HasAura(17626) ||  // Flask of Titans
+           !bot->HasAura(17543) ||  // Fire protection
+           !bot->HasAura(17549) ||  // Arcane protection
+           !bot->HasAura(17548) ||  // Shadow protection
+           !bot->HasAura(17546) ||  // Nature protection
+           !bot->HasAura(17544) ||  // Frost protection
+           !bot->HasAura(6346);     // Fear ward
+}
 
 bool Aq40AttackVeknilashAction::Execute(Event event)
 {
+    if (!bot->IsAlive())
+    {
+        return false;
+    }
+
     bool isMelee = bot->IsClass(CLASS_WARRIOR) || bot->IsClass(CLASS_ROGUE) || bot->IsClass(CLASS_DEATH_KNIGHT) ||
                    bot->IsClass(CLASS_PALADIN) || bot->IsClass(CLASS_HUNTER) || bot->IsClass(CLASS_SHAMAN) ||
                    bot->IsClass(CLASS_DRUID);
@@ -113,6 +125,11 @@ bool Aq40AttackVeknilashAction::Execute(Event event)
 
 bool Aq40AttackVeklorAction::Execute(Event event)
 {
+    if (!bot->IsAlive())
+    {
+        return false;
+    }
+
     bool isCaster = bot->IsClass(CLASS_MAGE) || bot->IsClass(CLASS_WARLOCK) || bot->IsClass(CLASS_SHAMAN) ||
                     bot->IsClass(CLASS_DRUID);
     bool isTank = botAI->IsTank(bot);
