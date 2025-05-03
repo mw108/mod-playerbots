@@ -48,15 +48,50 @@ bool Aq40AttackVeknilashAction::Execute(Event event)
     bool isMelee = bot->IsClass(CLASS_WARRIOR) || bot->IsClass(CLASS_ROGUE) || bot->IsClass(CLASS_DEATH_KNIGHT) ||
                    bot->IsClass(CLASS_PALADIN) || bot->IsClass(CLASS_HUNTER) || bot->IsClass(CLASS_SHAMAN) ||
                    bot->IsClass(CLASS_DRUID);
-    bool isTank = botAI->IsTank(bot);
+    bool isTank = botAI->IsTank(bot) && !botAI->IsAssistTank(bot);
+    bool isAssistTank = botAI->IsAssistTank(bot);
     bool isHealer = botAI->IsHeal(bot);
     bool isRanged = botAI->IsRangedDps(bot);
     isMelee = isMelee && !isHealer && !isRanged;
 
-    Unit* target = context->GetValue<Unit*>("current target")->Get();
+    Unit* currentTarget = context->GetValue<Unit*>("current target")->Get();
     Unit* boss = AI_VALUE2(Unit*, "find target", "emperor vek'nilash");
 
-    if (boss && boss->IsInCombat() && ( isTank || isMelee ) )
+    // Let assist tank take care of hostile bugs
+    if (isAssistTank)
+    {
+        GuidVector bugs = context->GetValue<GuidVector>("possible targets")->Get();
+        for (GuidVector::iterator i = bugs.begin(); i != bugs.end(); ++i)
+        {
+            Unit* unit = botAI->GetUnit(*i);
+            if (!unit)
+            {
+                continue;
+            }
+            if (!unit->IsAlive())
+            {
+                continue;
+            }
+            if (!unit->IsHostileTo(bot))
+            {
+                continue;
+            }
+            if (botAI->EqualLowercaseName(unit->GetName(), "emperor vek'lor"))
+            {
+                continue;
+            }
+            if (botAI->EqualLowercaseName(unit->GetName(), "emperor vek'nilash"))
+            {
+                continue;
+            }
+            if (unit->GetDistance2d(bot) <= 5.0f)
+            {
+                return Attack(unit);
+            }
+        }
+    }
+
+    if (boss && boss->IsInCombat() && (isTank || isMelee) && currentTarget != boss)
     {
         return Attack(boss);
     }
@@ -73,10 +108,10 @@ bool Aq40AttackVeklorAction::Execute(Event event)
     bool isRanged = botAI->IsRangedDps(bot);
     isCaster = isCaster && isRanged && !isHealer && !isTank;
 
-    Unit* target = context->GetValue<Unit*>("current target")->Get();
+    Unit* currentTarget = context->GetValue<Unit*>("current target")->Get();
     Unit* boss = AI_VALUE2(Unit*, "find target", "emperor vek'lor");
 
-    if (boss && boss->IsInCombat() && isCaster)
+    if (boss && boss->IsInCombat() && isCaster && currentTarget != boss)
     {
         return Attack(boss);
     }
