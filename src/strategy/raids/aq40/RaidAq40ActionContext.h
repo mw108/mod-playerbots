@@ -16,10 +16,8 @@ public:
         creators["aq40 check nature protection potion buff"] = &RaidAq40ActionContext::aq40_check_nature_protection_potion_buff;
         creators["aq40 check frost protection potion buff"] = &RaidAq40ActionContext::aq40_check_frost_protection_potion_buff;
         creators["aq40 check fear ward buff"] = &RaidAq40ActionContext::aq40_check_fear_ward_buff;
-        /*
         creators["aq40 attack veknilash"] = &RaidAq40ActionContext::aq40_attack_veknilash;
         creators["aq40 attack veklor"] = &RaidAq40ActionContext::aq40_attack_veklor;
-        */
     }
 
 private:

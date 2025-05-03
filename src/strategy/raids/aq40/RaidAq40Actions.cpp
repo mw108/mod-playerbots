@@ -45,26 +45,41 @@ bool Aq40CheckFearWardBuffAction::isUseful() { return !bot->HasAura(6346); }
 
 bool Aq40AttackVeknilashAction::Execute(Event event)
 {
-    if (Unit* boss = AI_VALUE2(Unit*, "find target", "emperor vek'nilash"))
+    bool isMelee = bot->IsClass(CLASS_WARRIOR) || bot->IsClass(CLASS_ROGUE) || bot->IsClass(CLASS_DEATH_KNIGHT) ||
+                   bot->IsClass(CLASS_PALADIN) || bot->IsClass(CLASS_HUNTER) || bot->IsClass(CLASS_SHAMAN) ||
+                   bot->IsClass(CLASS_DRUID);
+    bool isTank = botAI->IsTank(bot);
+    bool isHealer = botAI->IsHeal(bot);
+    bool isRanged = botAI->IsRangedDps(bot);
+    isMelee = isMelee && !isHealer && !isRanged;
+
+    Unit* target = context->GetValue<Unit*>("current target")->Get();
+    Unit* boss = AI_VALUE2(Unit*, "find target", "emperor vek'nilash");
+
+    if (boss && boss->IsInCombat() && target != boss && ( isTank || isMelee ) )
     {
-        float botDist = bot->GetDistance(boss);
-        if (botDist > INTERACTION_DISTANCE)
-            return MoveTo(bot->GetMapId(), boss->GetPositionX(), boss->GetPositionY(), boss->GetPositionZ());
-        bot->Attack(boss, true);
-        return true;
+        return Attack(boss);
     }
+
     return false;
 }
 
 bool Aq40AttackVeklorAction::Execute(Event event)
 {
-    if (Unit* boss = AI_VALUE2(Unit*, "find target", "emperor vek'lor"))
+    bool isCaster = bot->IsClass(CLASS_MAGE) || bot->IsClass(CLASS_WARLOCK) || bot->IsClass(CLASS_SHAMAN) ||
+                    bot->IsClass(CLASS_DRUID);
+    bool isTank = botAI->IsTank(bot);
+    bool isHealer = botAI->IsHeal(bot);
+    bool isRanged = botAI->IsRangedDps(bot);
+    isCaster = isCaster && isRanged && !isHealer && !isTank;
+
+    Unit* target = context->GetValue<Unit*>("current target")->Get();
+    Unit* boss = AI_VALUE2(Unit*, "find target", "emperor vek'lor");
+
+    if (boss && boss->IsInCombat() && target != boss && isCaster)
     {
-        float botDist = bot->GetDistance(boss);
-        if (botDist > 20.0f)
-            return MoveTo(bot->GetMapId(), boss->GetPositionX(), boss->GetPositionY(), boss->GetPositionZ());
-        bot->Attack(boss, false);
-        return true;
+        return Attack(boss);
     }
+
     return false;
 }

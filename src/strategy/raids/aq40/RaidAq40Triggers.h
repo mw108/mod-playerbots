@@ -5,17 +5,17 @@
 #include "Playerbots.h"
 #include "Trigger.h"
 
-class Aq40MoveToVeknilashTrigger : public Trigger
+class Aq40EmperorVeknilashTrigger : public Trigger
 {
 public:
-    Aq40MoveToVeknilashTrigger(PlayerbotAI* botAI) : Trigger(botAI, "aq40 move to veknilash") {}
+    Aq40MoveToVeknilashTrigger(PlayerbotAI* botAI) : Trigger(botAI, "emperor vek'nilash") {}
     bool IsActive() override;
 };
 
-class Aq40MoveToVeklorTrigger : public Trigger
+class Aq40EmperorVeklorTrigger : public Trigger
 {
 public:
-    Aq40MoveToVeklorTrigger(PlayerbotAI* botAI) : Trigger(botAI, "aq40 move to veklor") {}
+    Aq40MoveToVeklorTrigger(PlayerbotAI* botAI) : Trigger(botAI, "emperor vek'lor") {}
     bool IsActive() override;
 };
 

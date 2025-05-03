@@ -10,13 +10,13 @@ class RaidAq40TriggerContext : public NamedObjectContext<Trigger>
 public:
     RaidAq40TriggerContext()
     {
-        creators["aq40 move to veknilash"] = &RaidAq40TriggerContext::move_to_veknilash;
-        creators["aq40 move to veklor"] = &RaidAq40TriggerContext::move_to_veklor;
+        creators["emperor veknilash"] = &RaidAq40TriggerContext::emperor_veknilash;
+        creators["emperor veklor"] = &RaidAq40TriggerContext::emperor_veklor;
     }
 
 private:
-    static Trigger* move_to_veknilash(PlayerbotAI* ai) { return new Aq40MoveToVeknilashTrigger(ai); }
-    static Trigger* move_to_veklor(PlayerbotAI* ai) { return new Aq40MoveToVeklorTrigger(ai); }
+    static Trigger* emperor_veknilash(PlayerbotAI* ai) { return new Aq40EmperorVeknilashTrigger(ai); }
+    static Trigger* emperor_veklor(PlayerbotAI* ai) { return new Aq40EmperorVeklorTrigger(ai); }
 };
 
 #endif

@@ -40,17 +40,17 @@ public:
     bool isUseful() override;
 };
 
-class Aq40AttackVeknilashAction : public MovementAction
+class Aq40AttackVeknilashAction : public AttackAction
 {
 public:
-    Aq40AttackVeknilashAction(PlayerbotAI* botAI, std::string const name = "aq40 attack veknilash") : MovementAction(botAI, name) {}
+    Aq40AttackVeknilashAction(PlayerbotAI* botAI) : AttackAction(botAI, "aq40 attack veknilash") {}
     bool Execute(Event event) override;
 };
 
-class Aq40AttackVeklorAction : public MovementAction
+class Aq40AttackVeklorAction : public AttackAction
 {
 public:
-    Aq40AttackVeklorAction(PlayerbotAI* botAI, std::string const name = "aq40 attack veklor") : MovementAction(botAI, name) {}
+    Aq40AttackVeklorAction(PlayerbotAI* botAI) : AttackAction(botAI, "aq40 attack veklor") {}
     bool Execute(Event event) override;
 };
 
