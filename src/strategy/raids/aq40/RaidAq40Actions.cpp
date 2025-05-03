@@ -84,18 +84,30 @@ bool Aq40AttackVeknilashAction::Execute(Event event)
             {
                 continue;
             }
-            if (unit->GetDistance2d(bot) <= 5.0f)
+            if (unit->GetDistance2d(bot) > 5.0f)
             {
+                LOG_INFO("playerbots", "Bot {} is attacking {}", bot->GetName().c_str(), unit->GetName().c_str());
                 return Attack(unit);
             }
         }
     }
 
-    if (boss && boss->IsInCombat() && (isTank || isMelee) && currentTarget != boss)
+    if (boss && boss->IsInCombat() && (isTank || isMelee))
     {
-        return Attack(boss);
+        if (currentTarget != boss)
+        {
+            LOG_INFO("playerbots", "Bot {} is attacking {}", bot->GetName().c_str(), currentTarget->GetName().c_str());
+            return Attack(boss);
+        }
+        else
+        {
+            LOG_INFO("playerbots", "Bot {} is already attacking {}", bot->GetName().c_str(),
+                     currentTarget->GetName().c_str());
+            return false;
+        }
     }
 
+    LOG_INFO("playerbots", "Bot {} can't attack Emperor Vek'nilash", bot->GetName().c_str());
     return false;
 }
 
@@ -111,10 +123,21 @@ bool Aq40AttackVeklorAction::Execute(Event event)
     Unit* currentTarget = context->GetValue<Unit*>("current target")->Get();
     Unit* boss = AI_VALUE2(Unit*, "find target", "emperor vek'lor");
 
-    if (boss && boss->IsInCombat() && isCaster && currentTarget != boss)
+    if (boss && boss->IsInCombat() && isCaster)
     {
-        return Attack(boss);
+        if (currentTarget != boss)
+        {
+            LOG_INFO("playerbots", "Bot {} is attacking {}", bot->GetName().c_str(), currentTarget->GetName().c_str());
+            return Attack(boss);
+        }
+        else
+        {
+            LOG_INFO("playerbots", "Bot {} is already attacking {}", bot->GetName().c_str(),
+                     currentTarget->GetName().c_str());
+            return false;
+        }
     }
 
+    LOG_INFO("playerbots", "Bot {} can't attack Emperor Vek'nilash", bot->GetName().c_str());
     return false;
 }
