@@ -24,6 +24,14 @@ public:
     bool isUseful() override;
 };
 
+class Aq40CheckFrostProtectionPotionBuffAction : public Action
+{
+public:
+    Aq40CheckFrostProtectionPotionBuffAction(PlayerbotAI* botAI) : Action(botAI, "aq40 frost protection potion buff check") {}
+    bool Execute(Event event) override;
+    bool isUseful() override;
+};
+
 class Aq40CheckFearWardBuffAction : public Action
 {
 public:

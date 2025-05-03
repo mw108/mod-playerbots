@@ -21,6 +21,15 @@ bool Aq40CheckNatureProtectionPotionBuffAction::Execute(Event event)
 
 bool Aq40CheckNatureProtectionPotionBuffAction::isUseful() { return !bot->HasAura(17546); }
 
+bool Aq40CheckFrostProtectionPotionBuffAction::Execute(Event event)
+{
+    LOG_INFO("playerbots", "Applying frost protection buff to bot {}", bot->GetName().c_str());
+    bot->AddAura(17544, bot);
+    return true;
+}
+
+bool Aq40CheckFrostProtectionPotionBuffAction::isUseful() { return !bot->HasAura(17544); }
+
 bool Aq40CheckFearWardBuffAction::Execute(Event event)
 {
     LOG_INFO("playerbots", "Applying fear ward buff to bot {}", bot->GetName().c_str());

@@ -11,6 +11,9 @@ void RaidAq40Strategy::InitTriggers(std::vector<TriggerNode*>& triggers)
         "often", NextAction::array(0, new NextAction("aq40 check nature protection potion buff", ACTION_RAID), NULL)));
 
     triggers.push_back(new TriggerNode(
+        "often", NextAction::array(0, new NextAction("aq40 check frost protection potion buff", ACTION_RAID), NULL)));
+
+    triggers.push_back(new TriggerNode(
         "often", NextAction::array(0, new NextAction("aq40 check fear ward buff", ACTION_RAID), NULL)));
 
     /*
