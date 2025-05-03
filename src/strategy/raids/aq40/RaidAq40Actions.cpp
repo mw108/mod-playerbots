@@ -5,7 +5,7 @@
 
 bool Aq40CheckShadowProtectionPotionBuffAction::Execute(Event event)
 {
-    LOG_INFO("playerbots", "Applying shadow protection buff to bot {}", bot->GetName().c_str());
+    LOG_INFO("aq40_strategies", "Applying shadow protection buff to bot {}", bot->GetName().c_str());
     bot->AddAura(17548, bot);
     return true;
 }
@@ -14,7 +14,7 @@ bool Aq40CheckShadowProtectionPotionBuffAction::isUseful() { return !bot->HasAur
 
 bool Aq40CheckNatureProtectionPotionBuffAction::Execute(Event event)
 {
-    LOG_INFO("playerbots", "Applying nature protection buff to bot {}", bot->GetName().c_str());
+    LOG_INFO("aq40_strategies", "Applying nature protection buff to bot {}", bot->GetName().c_str());
     bot->AddAura(17546, bot);
     return true;
 }
@@ -23,7 +23,7 @@ bool Aq40CheckNatureProtectionPotionBuffAction::isUseful() { return !bot->HasAur
 
 bool Aq40CheckFrostProtectionPotionBuffAction::Execute(Event event)
 {
-    LOG_INFO("playerbots", "Applying frost protection buff to bot {}", bot->GetName().c_str());
+    LOG_INFO("aq40_strategies", "Applying frost protection buff to bot {}", bot->GetName().c_str());
     bot->AddAura(17544, bot);
     return true;
 }
@@ -32,7 +32,7 @@ bool Aq40CheckFrostProtectionPotionBuffAction::isUseful() { return !bot->HasAura
 
 bool Aq40CheckFearWardBuffAction::Execute(Event event)
 {
-    LOG_INFO("playerbots", "Applying fear ward buff to bot {}", bot->GetName().c_str());
+    LOG_INFO("aq40_strategies", "Applying fear ward buff to bot {}", bot->GetName().c_str());
     bot->AddAura(6346, bot);
     if (Pet* pet = bot->GetPet())
     {
@@ -86,7 +86,7 @@ bool Aq40AttackVeknilashAction::Execute(Event event)
             }
             if (unit->GetDistance2d(bot) > 5.0f)
             {
-                LOG_INFO("playerbots", "Bot {} is attacking {}", bot->GetName().c_str(), unit->GetName().c_str());
+                LOG_INFO("aq40_strategies", "Bot {} is attacking {}", bot->GetName().c_str(), unit->GetName().c_str());
                 return Attack(unit);
             }
         }
@@ -96,18 +96,18 @@ bool Aq40AttackVeknilashAction::Execute(Event event)
     {
         if (currentTarget != boss)
         {
-            LOG_INFO("playerbots", "Bot {} is attacking {}", bot->GetName().c_str(), currentTarget->GetName().c_str());
+            LOG_INFO("aq40_strategies", "Bot {} is attacking {}", bot->GetName().c_str(), currentTarget->GetName().c_str());
             return Attack(boss);
         }
         else
         {
-            LOG_INFO("playerbots", "Bot {} is already attacking {}", bot->GetName().c_str(),
+            LOG_INFO("aq40_strategies", "Bot {} is already attacking {}", bot->GetName().c_str(),
                      currentTarget->GetName().c_str());
             return false;
         }
     }
 
-    LOG_INFO("playerbots", "Bot {} can't attack Emperor Vek'nilash", bot->GetName().c_str());
+    LOG_INFO("aq40_strategies", "Bot {} can't attack Emperor Vek'nilash", bot->GetName().c_str());
     return false;
 }
 
@@ -127,17 +127,17 @@ bool Aq40AttackVeklorAction::Execute(Event event)
     {
         if (currentTarget != boss)
         {
-            LOG_INFO("playerbots", "Bot {} is attacking {}", bot->GetName().c_str(), currentTarget->GetName().c_str());
+            LOG_INFO("aq40_strategies", "Bot {} is attacking {}", bot->GetName().c_str(), currentTarget->GetName().c_str());
             return Attack(boss);
         }
         else
         {
-            LOG_INFO("playerbots", "Bot {} is already attacking {}", bot->GetName().c_str(),
+            LOG_INFO("aq40_strategies", "Bot {} is already attacking {}", bot->GetName().c_str(),
                      currentTarget->GetName().c_str());
             return false;
         }
     }
 
-    LOG_INFO("playerbots", "Bot {} can't attack Emperor Vek'nilash", bot->GetName().c_str());
+    LOG_INFO("aq40_strategies", "Bot {} can't attack Emperor Vek'nilash", bot->GetName().c_str());
     return false;
 }
