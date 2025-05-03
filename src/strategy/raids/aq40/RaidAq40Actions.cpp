@@ -96,7 +96,7 @@ bool Aq40AttackVeknilashAction::Execute(Event event)
     {
         if (currentTarget != boss)
         {
-            LOG_INFO("aq40_strategies", "Bot {} is attacking {}", bot->GetName().c_str(), currentTarget->GetName().c_str());
+            LOG_INFO("aq40_strategies", "Bot {} is attacking {}", bot->GetName().c_str(), boss->GetName().c_str());
             return Attack(boss);
         }
         else
@@ -127,7 +127,7 @@ bool Aq40AttackVeklorAction::Execute(Event event)
     {
         if (currentTarget != boss)
         {
-            LOG_INFO("aq40_strategies", "Bot {} is attacking {}", bot->GetName().c_str(), currentTarget->GetName().c_str());
+            LOG_INFO("aq40_strategies", "Bot {} is attacking {}", bot->GetName().c_str(), boss->GetName().c_str());
             return Attack(boss);
         }
         else
@@ -138,6 +138,6 @@ bool Aq40AttackVeklorAction::Execute(Event event)
         }
     }
 
-    LOG_INFO("aq40_strategies", "Bot {} can't attack Emperor Vek'nilash", bot->GetName().c_str());
+    LOG_INFO("aq40_strategies", "Bot {} can't attack Emperor Vek'lor", bot->GetName().c_str());
     return false;
 }
