@@ -11,7 +11,6 @@ bool Aq40EmperorVeknilashTrigger::IsActive()
                           bot->IsClass(CLASS_DEATH_KNIGHT) || bot->IsClass(CLASS_PALADIN) ||
                           bot->IsClass(CLASS_HUNTER) || bot->IsClass(CLASS_SHAMAN) || bot->IsClass(CLASS_DRUID);
         bool isTank = botAI->IsTank(bot) && !botAI->IsAssistTank(bot);
-        bool isAssistTank = botAI->IsAssistTank(bot);
         bool isHealer = botAI->IsHeal(bot);
         bool isRanged = botAI->IsRangedDps(bot);
         isPhysical = isPhysical && !isHealer && !isRanged;

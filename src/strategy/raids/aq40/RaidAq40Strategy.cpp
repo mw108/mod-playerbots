@@ -11,5 +11,5 @@ void RaidAq40Strategy::InitTriggers(std::vector<TriggerNode*>& triggers)
         "emperor veknilash", NextAction::array(0, new NextAction("aq40 attack veknilash", ACTION_RAID + 1), nullptr)));
 
     triggers.push_back(new TriggerNode(
-        "emperor veklor", NextAction::array(0, new NextAction("aq40 attack veklor", ACTION_RAID + 1), nullptr)));
+        "emperor veklor", NextAction::array(0, new NextAction("aq40 attack veklor", ACTION_RAID + 2), nullptr)));
 }

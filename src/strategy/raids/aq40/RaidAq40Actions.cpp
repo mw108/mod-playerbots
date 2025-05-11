@@ -104,7 +104,7 @@ bool Aq40AttackVeknilashAction::Execute(Event event)
         }
     }
 
-    if (boss && boss->IsInCombat() && (isTank || isPhysical))
+    if (boss && boss->IsInCombat() && (isTank || isAssistTank || isPhysical))
     {
         if (currentTarget != boss)
         {
