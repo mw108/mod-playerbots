@@ -57,14 +57,14 @@ bool Aq40AttackVeknilashAction::Execute(Event event)
         return false;
     }
 
-    bool isMelee = bot->IsClass(CLASS_WARRIOR) || bot->IsClass(CLASS_ROGUE) || bot->IsClass(CLASS_DEATH_KNIGHT) ||
+    bool isPhysical = bot->IsClass(CLASS_WARRIOR) || bot->IsClass(CLASS_ROGUE) || bot->IsClass(CLASS_DEATH_KNIGHT) ||
                    bot->IsClass(CLASS_PALADIN) || bot->IsClass(CLASS_HUNTER) || bot->IsClass(CLASS_SHAMAN) ||
                    bot->IsClass(CLASS_DRUID);
     bool isTank = botAI->IsTank(bot) && !botAI->IsAssistTank(bot);
     bool isAssistTank = botAI->IsAssistTank(bot);
     bool isHealer = botAI->IsHeal(bot);
     bool isRanged = botAI->IsRangedDps(bot);
-    isMelee = isMelee && !isHealer && !isRanged;
+    isPhysical = isPhysical && !isHealer && !isRanged;
 
     Unit* currentTarget = context->GetValue<Unit*>("current target")->Get();
     Unit* boss = AI_VALUE2(Unit*, "find target", "emperor vek'nilash");
@@ -104,7 +104,7 @@ bool Aq40AttackVeknilashAction::Execute(Event event)
         }
     }
 
-    if (boss && boss->IsInCombat() && (isTank || isMelee))
+    if (boss && boss->IsInCombat() && (isTank || isPhysical))
     {
         if (currentTarget != boss)
         {
