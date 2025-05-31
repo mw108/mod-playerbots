@@ -106,37 +106,10 @@ public:
     bool isUseful() override;
 };
 
-class RazorscaleFireResistanceAction : public Action
-{
-public:
-    RazorscaleFireResistanceAction(PlayerbotAI* botAI) : Action(botAI, "razorscale fire resistance action") {}
-    bool Execute(Event event) override;
-    bool isUseful() override;
-};
-
-//
-// Ignis
-//
-class IgnisFireResistanceAction : public Action
-{
-public:
-    IgnisFireResistanceAction(PlayerbotAI* botAI) : Action(botAI, "ignis fire resistance action") {}
-    bool Execute(Event event) override;
-    bool isUseful() override;
-};
-
 class HodirMoveSnowpackedIcicleAction : public MovementAction
 {
 public:
     HodirMoveSnowpackedIcicleAction(PlayerbotAI* botAI) : MovementAction(botAI, "hodir move snowpacked icicle") {}
-    bool Execute(Event event) override;
-    bool isUseful() override;
-};
-
-class HodirFrostResistanceAction : public Action
-{
-public:
-    HodirFrostResistanceAction(PlayerbotAI* botAI) : Action(botAI, "hodir frost resistance action") {}
     bool Execute(Event event) override;
     bool isUseful() override;
 };
@@ -157,6 +130,14 @@ public:
     bool isUseful() override;
 };
 
+class IronAssemblyRuneOfPowerAction : public MovementAction
+{
+public:
+    IronAssemblyRuneOfPowerAction(PlayerbotAI* botAI) : MovementAction(botAI, "iron assembly rune of power action") {}
+    bool Execute(Event event) override;
+    bool isUseful() override;
+};
+
 class KologarnMarkDpsTargetAction : public Action
 {
 public:
@@ -173,19 +154,43 @@ public:
     bool isUseful() override;
 };
 
-class KologarnNatureResistanceAction : public Action
-{
-public:
-    KologarnNatureResistanceAction(PlayerbotAI* botAI) : Action(botAI, "kologarn nature resistance action") {}
-    bool Execute(Event event) override;
-    bool isUseful() override;
-};
-
 class KologarnRubbleSlowdownAction : public Action
 {
 public:
     KologarnRubbleSlowdownAction(PlayerbotAI* botAI) : Action(botAI, "kologarn rubble slowdown action") {}
     bool Execute(Event event) override;
+};
+
+class KologarnEyebeamAction : public MovementAction
+{
+public:
+    KologarnEyebeamAction(PlayerbotAI* botAI) : MovementAction(botAI, "kologarn eyebeam action") {}
+    bool Execute(Event event) override;
+    bool isUseful() override;
+};
+
+class KologarnRtiTargetAction : public Action
+{
+public:
+    KologarnRtiTargetAction(PlayerbotAI* botAI) : Action(botAI, "kologarn rti target action") {}
+    bool Execute(Event event) override;
+    bool isUseful() override;
+};
+
+class KologarnCrunchArmorAction : public Action
+{
+public:
+    KologarnCrunchArmorAction(PlayerbotAI* botAI) : Action(botAI, "kologarn crunch armor action") {}
+    bool Execute(Event event) override;
+    bool isUseful() override;
+};
+
+class AuriayaFallFromFloorAction : public Action
+{
+public:
+    AuriayaFallFromFloorAction(PlayerbotAI* botAI) : Action(botAI, "auriaya fall from floor action") {}
+    bool Execute(Event event) override;
+    bool isUseful() override;
 };
 
 class HodirBitingColdJumpAction : public MovementAction
@@ -203,10 +208,72 @@ public:
     bool isUseful() override;
 };
 
-class FreyaMarkEonarsGiftAction : public MovementAction
+class FreyaMarkDpsTargetAction : public MovementAction
 {
 public:
-    FreyaMarkEonarsGiftAction(PlayerbotAI* botAI) : MovementAction(botAI, "freya mark eonars gift") {}
+    FreyaMarkDpsTargetAction(PlayerbotAI* botAI) : MovementAction(botAI, "freya mark dps target action") {}
+    bool Execute(Event event) override;
+    bool isUseful() override;
+};
+
+class FreyaMoveToHealingSporeAction : public MovementAction
+{
+public:
+    FreyaMoveToHealingSporeAction(PlayerbotAI* ai) : MovementAction(ai, "freya move to healing spore action") {}
+
+    bool Execute(Event event) override;
+    bool isUseful() override;
+};
+
+class ThorimUnbalancingStrikeAction : public Action
+{
+public:
+    ThorimUnbalancingStrikeAction(PlayerbotAI* ai) : Action(ai, "thorim unbalancing strike action") {}
+
+    bool Execute(Event event) override;
+    bool isUseful() override;
+};
+
+class ThorimMarkDpsTargetAction : public Action
+{
+public:
+    ThorimMarkDpsTargetAction(PlayerbotAI* ai) : Action(ai, "thorim mark dps target action") {}
+
+    bool Execute(Event event) override;
+    bool isUseful() override;
+};
+
+class ThorimArenaPositioningAction : public MovementAction
+{
+public:
+    ThorimArenaPositioningAction(PlayerbotAI* ai) : MovementAction(ai, "thorim arena positioning action") {}
+
+    bool Execute(Event event) override;
+    bool isUseful() override;
+};
+
+class ThorimGauntletPositioningAction : public MovementAction
+{
+public:
+    ThorimGauntletPositioningAction(PlayerbotAI* ai) : MovementAction(ai, "thorim gauntlet positioning action") {}
+
+    bool Execute(Event event) override;
+    bool isUseful() override;
+};
+
+class ThorimFallFromFloorAction : public Action
+{
+public:
+    ThorimFallFromFloorAction(PlayerbotAI* botAI) : Action(botAI, "thorim fall from floor action") {}
+    bool Execute(Event event) override;
+    bool isUseful() override;
+};
+
+class ThorimPhase2PositioningAction : public MovementAction
+{
+public:
+    ThorimPhase2PositioningAction(PlayerbotAI* ai) : MovementAction(ai, "thorim phase 2 positioning action") {}
+
     bool Execute(Event event) override;
     bool isUseful() override;
 };

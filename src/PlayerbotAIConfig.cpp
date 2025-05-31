@@ -128,6 +128,7 @@ bool PlayerbotAIConfig::Initialize()
 
     allowAccountBots = sConfigMgr->GetOption<bool>("AiPlayerbot.AllowAccountBots", true);
     allowGuildBots = sConfigMgr->GetOption<bool>("AiPlayerbot.AllowGuildBots", true);
+    allowTrustedAccountBots = sConfigMgr->GetOption<bool>("AiPlayerbot.AllowTrustedAccountBots", true);
     randomBotGuildNearby = sConfigMgr->GetOption<bool>("AiPlayerbot.RandomBotGuildNearby", false);
     randomBotInvitePlayer = sConfigMgr->GetOption<bool>("AiPlayerbot.RandomBotInvitePlayer", false);
     inviteChat = sConfigMgr->GetOption<bool>("AiPlayerbot.InviteChat", false);
@@ -307,9 +308,44 @@ bool PlayerbotAIConfig::Initialize()
     randomBotMinLevel = sConfigMgr->GetOption<int32>("AiPlayerbot.RandomBotMinLevel", 1);
     randomBotMaxLevel = sConfigMgr->GetOption<int32>("AiPlayerbot.RandomBotMaxLevel", 80);
     randomBotLoginAtStartup = sConfigMgr->GetOption<bool>("AiPlayerbot.RandomBotLoginAtStartup", true);
-    randomBotTeleLowerLevel = sConfigMgr->GetOption<int32>("AiPlayerbot.RandomBotTeleLowerLevel", 3);
-    randomBotTeleHigherLevel = sConfigMgr->GetOption<int32>("AiPlayerbot.RandomBotTeleHigherLevel", 1);
+    randomBotTeleLowerLevel = sConfigMgr->GetOption<int32>("AiPlayerbot.RandomBotTeleLowerLevel", 1);
+    randomBotTeleHigherLevel = sConfigMgr->GetOption<int32>("AiPlayerbot.RandomBotTeleHigherLevel", 3);
     openGoSpell = sConfigMgr->GetOption<int32>("AiPlayerbot.OpenGoSpell", 6477);
+
+    // Zones for NewRpgStrategy teleportation brackets
+    std::vector<uint32> zoneIds = {
+        // Classic WoW - Low-level zones
+        1, 12, 14, 85, 141, 215, 3430, 3524,
+        // Classic WoW - Mid-level zones
+        17, 38, 40, 130, 148, 3433, 3525,
+        // Classic WoW - High-level zones
+        10, 11, 44, 267, 331, 400, 406,
+        // Classic WoW - Higher-level zones
+        3, 8, 15, 16, 33, 45, 47, 51, 357, 405, 440,
+        // Classic WoW - Top-level zones
+        4, 28, 46, 139, 361, 490, 618, 1377,
+        // The Burning Crusade - Zones
+        3483, 3518, 3519, 3520, 3521, 3522, 3523, 4080,
+        // Wrath of the Lich King - Zones
+        65, 66, 67, 210, 394, 495, 2817, 3537, 3711, 4197
+    };
+
+    for (uint32 zoneId : zoneIds)
+    {
+        std::string setting = "AiPlayerbot.ZoneBracket." + std::to_string(zoneId);
+        std::string value = sConfigMgr->GetOption<std::string>(setting, "");
+        
+        if (!value.empty())
+        {
+            size_t commaPos = value.find(',');
+            if (commaPos != std::string::npos)
+            {
+                uint32 minLevel = atoi(value.substr(0, commaPos).c_str());
+                uint32 maxLevel = atoi(value.substr(commaPos + 1).c_str());
+                zoneBrackets[zoneId] = std::make_pair(minLevel, maxLevel);
+            }
+        }
+    }
 
     randomChangeMultiplier = sConfigMgr->GetOption<float>("AiPlayerbot.RandomChangeMultiplier", 1.0);
 
@@ -332,6 +368,12 @@ bool PlayerbotAIConfig::Initialize()
 	
     // Playerbots ATM
     allowPlayerbotsAtm = sConfigMgr->GetOption<bool>("AiPlayerbot.AllowPlayerbotsAtm", false); 	
+
+    // stagger bot flightpath takeoff
+    delayMin = sConfigMgr->GetOption<uint32>("AiPlayerbot.BotTaxiDelayMinMs", 350u);
+    delayMax = sConfigMgr->GetOption<uint32>("AiPlayerbot.BotTaxiDelayMaxMs", 5000u);
+    gapMs = sConfigMgr->GetOption<uint32>("AiPlayerbot.BotTaxiGapMs", 200u);
+    gapJitterMs = sConfigMgr->GetOption<uint32>("AiPlayerbot.BotTaxiGapJitterMs", 100u);
 
     LOG_INFO("server.loading", "Loading TalentSpecs...");
 
@@ -485,7 +527,7 @@ bool PlayerbotAIConfig::Initialize()
     autoGearQualityLimit = sConfigMgr->GetOption<int32>("AiPlayerbot.AutoGearQualityLimit", 3);
     autoGearScoreLimit = sConfigMgr->GetOption<int32>("AiPlayerbot.AutoGearScoreLimit", 0);
 
-    playerbotsXPrate = sConfigMgr->GetOption<float>("AiPlayerbot.PlayerbotsXPRate", 1.0);
+    randomBotXPRate = sConfigMgr->GetOption<float>("AiPlayerbot.RandomBotXPRate", 1.0);
     randomBotAllianceRatio = sConfigMgr->GetOption<int32>("AiPlayerbot.RandomBotAllianceRatio", 50);
     randomBotHordeRatio = sConfigMgr->GetOption<int32>("AiPlayerbot.RandomBotHordeRatio", 50);
     disableDeathKnightLogin = sConfigMgr->GetOption<bool>("AiPlayerbot.DisableDeathKnightLogin", 0);
@@ -557,7 +599,7 @@ bool PlayerbotAIConfig::Initialize()
     {
         sRandomPlayerbotMgr->Init();
     }
-    
+
     sRandomItemMgr->Init();
     sRandomItemMgr->InitAfterAhBot();
     sPlayerbotTextMgr->LoadBotTexts();

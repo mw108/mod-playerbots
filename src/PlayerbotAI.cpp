@@ -19,6 +19,7 @@
 #include "CreatureData.h"
 #include "EmoteAction.h"
 #include "Engine.h"
+#include "EventProcessor.h"
 #include "ExternalEventHelper.h"
 #include "GameObjectData.h"
 #include "GameTime.h"
@@ -1423,12 +1424,21 @@ void PlayerbotAI::DoNextAction(bool min)
             master = newMaster;
             botAI->SetMaster(newMaster);
             botAI->ResetStrategies();
-            botAI->ChangeStrategy("+follow", BOT_STATE_NON_COMBAT);
+            
+            if (!bot->InBattleground()) 
+            {
+                botAI->ChangeStrategy("+follow", BOT_STATE_NON_COMBAT);
 
-            if (botAI->GetMaster() == botAI->GetGroupMaster())
-                botAI->TellMaster("Hello, I follow you!");
+                if (botAI->GetMaster() == botAI->GetGroupMaster())
+                    botAI->TellMaster("Hello, I follow you!");
+                else
+                    botAI->TellMaster(!urand(0, 2) ? "Hello!" : "Hi!");
+            }
             else
-                botAI->TellMaster(!urand(0, 2) ? "Hello!" : "Hi!");
+            {
+                // we're in a battleground, stay with the pack and focus on objective 
+                botAI->ChangeStrategy("-follow", BOT_STATE_NON_COMBAT);
+            }
         }
     }
 
@@ -4321,7 +4331,7 @@ bool PlayerbotAI::AllowActive(ActivityType activityType)
     // #######################################################################################
 
     // Below is code to have a specified % of bots active at all times.
-    // The default is 10%. With 0.1% of all bots going active or inactive each minute.
+    // The default is 100%. With 1% of all bots going active or inactive each minute.
     uint32 mod = sPlayerbotAIConfig->botActiveAlone > 100 ? 100 : sPlayerbotAIConfig->botActiveAlone;
     if (sPlayerbotAIConfig->botActiveAloneSmartScale &&
         bot->GetLevel() >= sPlayerbotAIConfig->botActiveAloneSmartScaleWhenMinLevel &&
@@ -6269,4 +6279,24 @@ SpellFamilyNames PlayerbotAI::Class2SpellFamilyName(uint8 cls)
             break;
     }
     return SPELLFAMILY_GENERIC;
+}
+
+void PlayerbotAI::AddTimedEvent(std::function<void()> callback, uint32 delayMs)
+{
+    class LambdaEvent final : public BasicEvent
+    {
+        std::function<void()> _cb;
+    public:
+        explicit LambdaEvent(std::function<void()> cb) : _cb(std::move(cb)) {}
+        bool Execute(uint64 /*execTime*/, uint32 /*diff*/) override
+        {
+            _cb();
+            return true;           // remove after execution
+        }
+    };
+
+    // Every Player already owns an EventMap called m_Events
+    bot->m_Events.AddEvent(
+        new LambdaEvent(std::move(callback)),
+        bot->m_Events.CalculateTime(delayMs));
 }

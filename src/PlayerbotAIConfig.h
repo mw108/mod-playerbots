@@ -55,7 +55,7 @@ public:
     bool IsInPvpProhibitedArea(uint32 id);
 
     bool enabled;
-    bool allowAccountBots, allowGuildBots;
+    bool allowAccountBots, allowGuildBots, allowTrustedAccountBots;
     bool randomBotGuildNearby, randomBotInvitePlayer, inviteChat;
     uint32 globalCoolDown, reactDelay, maxWaitForMove, disableMoveSplinePath, maxMovementSearchTime, expireActionTime,
         dispelAuraDuration, passiveDelay, repeatDelay, errorDelay, rpgDelay, sitDelay, returnDelay, lootDelay;
@@ -195,6 +195,7 @@ public:
 
     bool randomBotLoginAtStartup;
     uint32 randomBotTeleLowerLevel, randomBotTeleHigherLevel;
+    std::map<uint32, std::pair<uint32, uint32>> zoneBrackets;
     bool logInGroupOnly, logValuesPerTick;
     bool fleeingEnabled;
     bool summonAtInnkeepersEnabled;
@@ -275,7 +276,7 @@ public:
     bool randomBotShowCloak;
     bool randomBotFixedLevel;
     bool disableRandomLevels;
-    float playerbotsXPrate;
+    float randomBotXPRate;
     uint32 randomBotAllianceRatio;
     uint32 randomBotHordeRatio;
     bool disableDeathKnightLogin;
@@ -347,6 +348,12 @@ public:
     uint32 useFastGroundMountAtMinLevel;
     uint32 useFlyMountAtMinLevel;
     uint32 useFastFlyMountAtMinLevel;
+
+    // stagger flightpath takeoff
+    uint32 delayMin;
+    uint32 delayMax;
+    uint32 gapMs;
+    uint32 gapJitterMs;
 
     bool allowPlayerbotsAtm;
 
