@@ -10,6 +10,7 @@
 #include "RaidEoEStrategy.h"
 #include "RaidMcStrategy.h"
 #include "RaidAq20Strategy.h"
+#include "RaidAq40Strategy.h"
 #include "RaidIccStrategy.h"
 #include "RaidVoAStrategy.h"
 
