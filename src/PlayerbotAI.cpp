@@ -1526,6 +1526,9 @@ void PlayerbotAI::ApplyInstanceStrategies(uint32 mapId, bool tellMaster)
         case 533:
             strategyName = "naxx";
             break;
+        case 548:
+            strategyName = "serpentshrinecavern";
+            break;
         case 574:
             strategyName = "wotlk-uk";  // Utgarde Keep
             break;
