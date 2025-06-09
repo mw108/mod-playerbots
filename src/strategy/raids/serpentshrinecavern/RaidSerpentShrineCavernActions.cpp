@@ -103,7 +103,7 @@ bool SerpentShrineCavernAttackEnchantedElementalAction::Execute(Event event)
     return false;
 }
 
-bool SerpentShrineCavernAttackTainteddElementalAction::Execute(Event event)
+bool SerpentShrineCavernAttackTaintedElementalAction::Execute(Event event)
 {
     if (!bot->IsAlive())
     {
