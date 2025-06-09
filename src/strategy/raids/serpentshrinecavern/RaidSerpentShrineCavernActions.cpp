@@ -151,6 +151,7 @@ bool SerpentShrineCavernAttackTaintedElementalAction::Execute(Event event)
         {
             LOG_INFO("ssc_strategies", "Bot {} is attacking {}", bot->GetName().c_str(), unit->GetName().c_str());
             target = unit;
+            break;
         }
     }
 
