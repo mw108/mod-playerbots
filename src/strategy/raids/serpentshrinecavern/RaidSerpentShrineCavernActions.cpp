@@ -71,6 +71,7 @@ bool SerpentShrineCavernAttackEnchantedElementalAction::Execute(Event event)
     }
 
     Unit* currentTarget = context->GetValue<Unit*>("current target")->Get();
+    Unit* target = nullptr;
 
     GuidVector targets = context->GetValue<GuidVector>("possible targets")->Get();
     for (GuidVector::iterator i = targets.begin(); i != targets.end(); ++i)
@@ -96,8 +97,14 @@ bool SerpentShrineCavernAttackEnchantedElementalAction::Execute(Event event)
         if (unit->GetDistance2d(bot) > 5.0f)
         {
             LOG_INFO("ssc_strategies", "Bot {} is attacking {}", bot->GetName().c_str(), unit->GetName().c_str());
-            return Attack(unit);
+            target = unit;
+            break;
         }
+    }
+
+    if (target)
+    {
+        return Attack(target);
     }
 
     return false;
@@ -117,6 +124,7 @@ bool SerpentShrineCavernAttackTaintedElementalAction::Execute(Event event)
     }
 
     Unit* currentTarget = context->GetValue<Unit*>("current target")->Get();
+    Unit* target = nullptr;
 
     GuidVector targets = context->GetValue<GuidVector>("possible targets")->Get();
     for (GuidVector::iterator i = targets.begin(); i != targets.end(); ++i)
@@ -142,8 +150,13 @@ bool SerpentShrineCavernAttackTaintedElementalAction::Execute(Event event)
         if (unit->GetDistance2d(bot) > 5.0f)
         {
             LOG_INFO("ssc_strategies", "Bot {} is attacking {}", bot->GetName().c_str(), unit->GetName().c_str());
-            return Attack(unit);
+            target = unit;
         }
+    }
+
+    if (target)
+    {
+        return Attack(target);
     }
 
     return false;
