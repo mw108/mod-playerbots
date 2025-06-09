@@ -13,14 +13,12 @@ public:
         LOG_INFO("playerbots", "RaidSerpentShrineCavernActionContext created");
 
         creators["serpentshrinecavern check buffs"] = &RaidSerpentShrineCavernActionContext::serpentshrinecavern_check_buffs;
-        creators["serpentshrinecavern attack enchanted elemental"] = &RaidSerpentShrineCavernActionContext::serpentshrinecavern_attack_veknilash;
-        creators["serpentshrinecavern attack tainted elemental"] = &RaidSerpentShrineCavernActionContext::serpentshrinecavern_attack_veklor;
+        creators["serpentshrinecavern attack enchanted elemental"] = &RaidSerpentShrineCavernActionContext::serpentshrinecavern_attack_enchanted_elemental;
     }
 
 private:
     static Action* serpentshrinecavern_check_buffs(PlayerbotAI* botAI) { return new SerpentShrineCavernCheckBuffsAction(botAI); }
-    static Action* serpentshrinecavern_attack_veknilash(PlayerbotAI* botAI) { return new SerpentShrineCavernAttackEnchantedElementalAction(botAI); }
-    static Action* serpentshrinecavern_attack_veklor(PlayerbotAI* botAI) { return new SerpentShrineCavernAttackTaintedElementalAction(botAI); }
+    static Action* serpentshrinecavern_attack_enchanted_elemental(PlayerbotAI* botAI) { return new SerpentShrineCavernAttackEnchantedElementalAction(botAI); }
 };
 
 #endif

@@ -11,12 +11,10 @@ public:
     RaidSerpentShrineCavernTriggerContext()
     {
         creators["enchanted elemental"] = &RaidSerpentShrineCavernTriggerContext::enchanted_elemental;
-        creators["tainted elemental"] = &RaidSerpentShrineCavernTriggerContext::tainted_elemental;
     }
 
 private:
     static Trigger* enchanted_elemental(PlayerbotAI* ai) { return new SerpentShrineCavernEnchantedElementalTrigger(ai); }
-    static Trigger* tainted_elemental(PlayerbotAI* ai) { return new SerpentShrineCavernTaintedElementalTrigger(ai); }
 };
 
 #endif

@@ -12,11 +12,4 @@ public:
     bool IsActive() override;
 };
 
-class SerpentShrineCavernTaintedElementalTrigger : public Trigger
-{
-public:
-    SerpentShrineCavernTaintedElementalTrigger(PlayerbotAI* botAI) : Trigger(botAI, "tainted elemental") {}
-    bool IsActive() override;
-};
-
 #endif

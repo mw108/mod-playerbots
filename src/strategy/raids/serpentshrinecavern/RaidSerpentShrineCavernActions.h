@@ -25,11 +25,4 @@ public:
     bool Execute(Event event) override;
 };
 
-class SerpentShrineCavernAttackTaintedElementalAction : public AttackAction
-{
-public:
-    SerpentShrineCavernAttackTaintedElementalAction(PlayerbotAI* botAI) : AttackAction(botAI, "serpentshrinecavern attack tainted elemental") {}
-    bool Execute(Event event) override;
-};
-
 #endif
