@@ -30,7 +30,7 @@ bool SerpentShrineCavernCheckBuffsAction::Execute(Event event)
         AddBuff(41611);  // Supreme Power of Shattrath
     else if (botAI->IsTank(bot))
         AddBuff(41609);  // Fortification of Shattrath
-    else if (botAI->IsDps(bot) && !botAI->IsCaster())
+    else if (botAI->IsDps(bot) && !botAI->IsCaster(bot))
         AddBuff(41608);  // Relentless Assault of Shattrath
 
     AddBuff(28511);  // Fire protection
