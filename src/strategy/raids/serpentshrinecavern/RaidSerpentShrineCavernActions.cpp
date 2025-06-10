@@ -141,29 +141,34 @@ bool SerpentShrineCavernLadyVashjCooseTargetAction::Execute(Event event)
             break;
         }
 
+        // Get distance to elemental, if possible
         float distance = 1000.0f;
         if (target_elemental)
         {
             distance = bot->GetDistance2d(target_elemental);
         }
 
+        // Pick closest
         if (target_elemental && distance < distanceElemental)
         {
             distanceElemental = distance;
             target = target_elemental;
         }
 
+        // If no elemental, pick closest elite, if possible
         if (!target && target_elite)
         {
             target = target_elite;
         }
 
+        // If no elite, pick closest strider, if possible
         if (!target && target_strider)
         {
             target = target_strider;
         }
     }
 
+    // If no target is assigned and there is an elemental, attack it
     if (!target && target_elemental)
     {
         target = target_elemental;
