@@ -89,7 +89,7 @@ bool SerpentShrineCavernLadyVashjCooseTargetAction::Execute(Event event)
     Unit* target_elite = nullptr;
     Unit* target_spore_bat = nullptr;
 
-    if (currentTarget && currentTarget->IsAlive() && currentTarget->getName() == "enchanted elemental")
+    if (currentTarget && currentTarget->IsAlive() && currentTarget->GetName() == "enchanted elemental")
     {
         return Attack(currentTarget);
     }
