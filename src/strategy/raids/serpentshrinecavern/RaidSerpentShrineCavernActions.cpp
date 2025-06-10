@@ -24,13 +24,13 @@ bool SerpentShrineCavernCheckBuffsAction::Execute(Event event)
     AddBuff(24425);  // Zul'Gurub
     AddBuff(22888);  // Onyxia
 
-    if (botAI->IsHeal())
+    if (botAI->IsHeal(bot))
         AddBuff(41610);  // Mighty Restoration of Shattrath
-    else if (botAI->IsRangedDps() && botAI->IsCaster())
+    else if (botAI->IsRangedDps(bot) && botAI->IsCaster(bot))
         AddBuff(41611);  // Supreme Power of Shattrath
-    else if (botAI->IsTank())
+    else if (botAI->IsTank(bot))
         AddBuff(41609);  // Fortification of Shattrath
-    else if (botAI->IsDps() && !botAI->IsCaster())
+    else if (botAI->IsDps(bot) && !botAI->IsCaster())
         AddBuff(41608);  // Relentless Assault of Shattrath
 
     AddBuff(28511);  // Fire protection
