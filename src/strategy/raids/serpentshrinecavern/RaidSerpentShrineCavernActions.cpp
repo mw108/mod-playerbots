@@ -86,7 +86,9 @@ bool SerpentShrineCavernLadyVashjCooseTargetAction::Execute(Event event)
     Unit* target_elemental = nullptr;
     Unit* target_strider = nullptr;
     Unit* target_elite = nullptr;
-    Unit* target_spore_bat = nullptr;    
+    Unit* target_spore_bat = nullptr;
+
+    float distanceElemental = 1000.0f;
 
     GuidVector targets = context->GetValue<GuidVector>("possible targets")->Get();
     for (GuidVector::iterator i = targets.begin(); i != targets.end(); ++i)
@@ -133,35 +135,32 @@ bool SerpentShrineCavernLadyVashjCooseTargetAction::Execute(Event event)
             break;
         }
 
-        float distanceElemental = target_elemental ? bot->GetDistance2d(target_elemental) : 1000.0f;
-        float distanceElite = target_elite ? bot->GetDistance2d(target_elite) : 1000.0f;
-        float distanceStrider = target_strider ? bot->GetDistance2d(target_strider) : 1000.0f;
-
-        if (!target && target_elemental && distanceElemental < sPlayerbotAIConfig->spellDistance)
+        if (target_elemental && bot->GetDistance2d(target_elemental) < distanceElemental)
         {
+            distanceElemental = bot->GetDistance2d(target_elemental);
             target = target_elemental;
         }
 
-        if (!target && target_elite && distanceElite < sPlayerbotAIConfig->spellDistance)
+        if (!target && target_elite)
         {
             target = target_elite;
         }
 
-        if (!target && target_strider && distanceStrider < sPlayerbotAIConfig->spellDistance)
+        if (!target && target_strider)
         {
             target = target_strider;
         }
+    }
 
-        if(target)
-        {
-            break;
-        }
+    if ( !target && target_elemental )
+    {
+        target = target_elemental;
     }
 
     if (target && target != currentTarget)
     {
         LOG_INFO("ssc_strategies", "Bot {} is attacking {}", bot->GetName().c_str(), target->GetName().c_str());
-        return Attack(target, true);
+        return Attack(target);
     }
 
     return false;
