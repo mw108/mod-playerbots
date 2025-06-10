@@ -5,10 +5,10 @@
 #include "Playerbots.h"
 #include "Trigger.h"
 
-class SerpentShrineCavernEnchantedElementalTrigger : public Trigger
+class SerpentShrineCavernLadyVashjTrigger : public Trigger
 {
 public:
-    SerpentShrineCavernEnchantedElementalTrigger(PlayerbotAI* botAI) : Trigger(botAI, "enchanted elemental") {}
+    SerpentShrineCavernLadyVashjTrigger(PlayerbotAI* botAI) : Trigger(botAI, "lady vashj") {}
     bool IsActive() override;
 };
 

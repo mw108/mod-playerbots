@@ -18,10 +18,10 @@ protected:
     void AddBuff(int32 spellId);
 };
 
-class SerpentShrineCavernAttackEnchantedElementalAction : public AttackAction
+class SerpentShrineCavernLadyVashjCooseTargetAction : public AttackAction
 {
 public:
-    SerpentShrineCavernAttackEnchantedElementalAction(PlayerbotAI* botAI) : AttackAction(botAI, "serpentshrinecavern attack enchanted elemental") {}
+    SerpentShrineCavernLadyVashjCooseTargetAction(PlayerbotAI* botAI) : AttackAction(botAI, "lady vashj choose target") {}
     bool Execute(Event event) override;
 };
 

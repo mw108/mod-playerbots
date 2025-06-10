@@ -10,11 +10,11 @@ class RaidSerpentShrineCavernTriggerContext : public NamedObjectContext<Trigger>
 public:
     RaidSerpentShrineCavernTriggerContext()
     {
-        creators["enchanted elemental"] = &RaidSerpentShrineCavernTriggerContext::enchanted_elemental;
+        creators["lady vashj"] = &RaidSerpentShrineCavernTriggerContext::lady_vashj;
     }
 
 private:
-    static Trigger* enchanted_elemental(PlayerbotAI* ai) { return new SerpentShrineCavernEnchantedElementalTrigger(ai); }
+    static Trigger* lady_vashj(PlayerbotAI* ai) { return new SerpentShrineCavernLadyVashjTrigger(ai); }
 };
 
 #endif

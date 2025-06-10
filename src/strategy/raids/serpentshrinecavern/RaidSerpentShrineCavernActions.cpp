@@ -23,12 +23,16 @@ bool SerpentShrineCavernCheckBuffsAction::Execute(Event event)
     AddBuff(23769);  // Dark Moon Fair resistance
     AddBuff(24425);  // Zul'Gurub
     AddBuff(22888);  // Onyxia
-    AddBuff(41610);  // Mighty Restoration of Shattrath
-    AddBuff(46837);  // Pure Death of Shattrath
-    AddBuff(41611);  // Supreme Power of Shattrath
-    AddBuff(46839);  // Blinding Light of Shattrath
-    AddBuff(41609);  // Fortification of Shattrath
-    AddBuff(41608);  // Relentless Assault of Shattrath
+
+    if (botAI->IsHeal())
+        AddBuff(41610);  // Mighty Restoration of Shattrath
+    else if (botAI->IsRangedDps() && botAI->IsCaster())
+        AddBuff(41611);  // Supreme Power of Shattrath
+    else if (botAI->IsTank())
+        AddBuff(41609);  // Fortification of Shattrath
+    else if (botAI->IsDps() && !botAI->IsCaster())
+        AddBuff(41608);  // Relentless Assault of Shattrath
+
     AddBuff(28511);  // Fire protection
     AddBuff(28536);  // Arcane protection
     AddBuff(28537);  // Shadow protection
@@ -62,7 +66,7 @@ bool SerpentShrineCavernCheckBuffsAction::isUseful()
     return false;
 }
 
-bool SerpentShrineCavernAttackEnchantedElementalAction::Execute(Event event)
+bool SerpentShrineCavernLadyVashjCooseTargetAction::Execute(Event event)
 {
     if (!bot->IsAlive())
     {
@@ -70,47 +74,94 @@ bool SerpentShrineCavernAttackEnchantedElementalAction::Execute(Event event)
     }
 
     bool isDps = botAI->IsDps(bot);
-    if (!isDps)
-    {
-        return false;
-    }
+    bool isRangedDps = botAI->IsRangedDps(bot);
+    bool isHeal = botAI->IsHeal(bot);
+    bool isTank = botAI->IsTank(bot);
+    bool isAssistTank = botAI->IsAssistTank(bot);
+    bool isPhase2 = false;
 
     Unit* currentTarget = context->GetValue<Unit*>("current target")->Get();
     Unit* target = nullptr;
+    Unit* target_boss = nullptr;
+    Unit* target_elemental = nullptr;
+    Unit* target_strider = nullptr;
+    Unit* target_elite = nullptr;
+    Unit* target_spore_bat = nullptr;    
 
     GuidVector targets = context->GetValue<GuidVector>("possible targets")->Get();
     for (GuidVector::iterator i = targets.begin(); i != targets.end(); ++i)
     {
         Unit* unit = botAI->GetUnit(*i);
-        if (!unit)
+        if (!unit || !unit->IsAlive())
         {
             continue;
         }
-        if (!unit->IsAlive())
+
+        if (botAI->EqualLowercaseName(unit->GetName(), "enchanted elemental"))
         {
-            continue;
+            target_elemental = unit;
         }
-        if (!botAI->EqualLowercaseName(unit->GetName(), "enchanted elemental"))
+
+        if (botAI->EqualLowercaseName(unit->GetName(), "coilfang elite"))
         {
-            continue;
+            target_elite = unit;
         }
-        if (currentTarget && currentTarget->GetGUID() == unit->GetGUID())
+
+        if (botAI->EqualLowercaseName(unit->GetName(), "coilfang strider"))
         {
-            target = unit;
+            target_strider = unit;
+        }
+
+        if (botAI->EqualLowercaseName(unit->GetName(), "toxic sporebat"))
+        {
+            target_spore_bat = unit;
+        }
+
+        if (botAI->EqualLowercaseName(unit->GetName(), "lady vashj"))
+        {
+            target_boss = unit;
+        }
+
+        if (target_boss && target_boss->HasAura(38112))  // SPELL_MAGIC_BARRIER
+        {
+            isPhase2 = true;
+        }
+
+        if (!isPhase2)
+        {
+            target = target_boss;
             break;
         }
 
-        if (unit->GetDistance2d(bot) > 5.0f)
+        float distanceElemental = target_elemental ? bot->GetDistance2d(target_elemental) : 1000.0f;
+        float distanceElite = target_elite ? bot->GetDistance2d(target_elite) : 1000.0f;
+        float distanceStrider = target_strider ? bot->GetDistance2d(target_strider) : 1000.0f;
+
+        if (!target && target_elemental && distanceElemental < sPlayerbotAIConfig->spellDistance)
         {
-            LOG_INFO("ssc_strategies", "Bot {} is attacking {}", bot->GetName().c_str(), unit->GetName().c_str());
-            target = unit;
+            target = target_elemental;
+        }
+
+        if (!target && target_elite && distanceElite < sPlayerbotAIConfig->spellDistance)
+        {
+            target = target_elite;
+        }
+
+        if (!target && target_strider && distanceStrider < sPlayerbotAIConfig->spellDistance)
+        {
+            target = target_strider;
+        }
+
+        if(target)
+        {
             break;
         }
     }
 
-    if (target)
+    if (target && target != currentTarget)
     {
-        return Attack(target);
+        LOG_INFO("ssc_strategies", "Bot {} is attacking {}", bot->GetName().c_str(), unit->GetName().c_str());
+        return Attack(target, true);
     }
 
     return false;

@@ -1,13 +1,11 @@
 #include "RaidSerpentShrineCavernTriggers.h"
 #include "SharedDefines.h"
 
-bool SerpentShrineCavernEnchantedElementalTrigger::IsActive()
+bool SerpentShrineCavernLadyVashjTrigger::IsActive()
 {
-    if (Unit* elemental = AI_VALUE2(Unit*, "find target", "enchanted elemental"))
+    if (Unit* elemental = AI_VALUE2(Unit*, "find target", "lady vashj"))
     {
-        bool isDps = botAI->IsDps(bot);
-        bool isEligible = isDps;
-        return isEligible;
+        return true;
     }
     return false;
 }

@@ -13,12 +13,12 @@ public:
         LOG_INFO("playerbots", "RaidSerpentShrineCavernActionContext created");
 
         creators["serpentshrinecavern check buffs"] = &RaidSerpentShrineCavernActionContext::serpentshrinecavern_check_buffs;
-        creators["serpentshrinecavern attack enchanted elemental"] = &RaidSerpentShrineCavernActionContext::serpentshrinecavern_attack_enchanted_elemental;
+        creators["lady vashj choose target"] = &RaidSerpentShrineCavernActionContext::lady_vashj_choose_target;
     }
 
 private:
     static Action* serpentshrinecavern_check_buffs(PlayerbotAI* botAI) { return new SerpentShrineCavernCheckBuffsAction(botAI); }
-    static Action* serpentshrinecavern_attack_enchanted_elemental(PlayerbotAI* botAI) { return new SerpentShrineCavernAttackEnchantedElementalAction(botAI); }
+    static Action* lady_vashj_choose_target(PlayerbotAI* botAI) { return new SerpentShrineCavernLadyVashjCooseTargetAction(botAI); }
 };
 
 #endif
