@@ -160,7 +160,7 @@ bool SerpentShrineCavernLadyVashjCooseTargetAction::Execute(Event event)
 
     if (target && target != currentTarget)
     {
-        LOG_INFO("ssc_strategies", "Bot {} is attacking {}", bot->GetName().c_str(), unit->GetName().c_str());
+        LOG_INFO("ssc_strategies", "Bot {} is attacking {}", bot->GetName().c_str(), target->GetName().c_str());
         return Attack(target, true);
     }
 
