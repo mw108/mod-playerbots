@@ -80,7 +80,7 @@ bool SerpentShrineCavernLadyVashjCooseTargetAction::Execute(Event event)
     bool isAssistTank = botAI->IsAssistTank(bot);
     bool isPhase2 = false;
 
-    if ( isHeal || isTank || isAssistTank )
+    if ( isHeal )
     {
         return false;
     }
