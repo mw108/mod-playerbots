@@ -80,6 +80,11 @@ bool SerpentShrineCavernLadyVashjCooseTargetAction::Execute(Event event)
     bool isAssistTank = botAI->IsAssistTank(bot);
     bool isPhase2 = false;
 
+    if ( isHeal || isTank || isAssistTank )
+    {
+        return false;
+    }
+
     Unit* currentTarget = context->GetValue<Unit*>("current target")->Get();
     Unit* target = nullptr;
     Unit* target_boss = nullptr;
