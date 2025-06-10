@@ -135,9 +135,15 @@ bool SerpentShrineCavernLadyVashjCooseTargetAction::Execute(Event event)
             break;
         }
 
-        if (target_elemental && bot->GetDistance2d(target_elemental) < distanceElemental)
+        float distance = 1000.0f;
+        if (target_elemental)
         {
-            distanceElemental = bot->GetDistance2d(target_elemental);
+            distance = bot->GetDistance2d(target_elemental);
+        }
+
+        if (target_elemental && distance < distanceElemental)
+        {
+            distanceElemental = distance;
             target = target_elemental;
         }
 
@@ -157,9 +163,9 @@ bool SerpentShrineCavernLadyVashjCooseTargetAction::Execute(Event event)
         target = target_elemental;
     }
 
-    if (target && target != currentTarget)
+    if (target /*&& target != currentTarget*/)
     {
-        LOG_INFO("ssc_strategies", "Bot {} is attacking {}", bot->GetName().c_str(), target->GetName().c_str());
+        //LOG_INFO("ssc_strategies", "Bot {} is attacking {}", bot->GetName().c_str(), target->GetName().c_str());
         return Attack(target);
     }
 
