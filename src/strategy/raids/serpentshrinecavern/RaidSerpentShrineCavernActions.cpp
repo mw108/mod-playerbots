@@ -88,6 +88,11 @@ bool SerpentShrineCavernLadyVashjCooseTargetAction::Execute(Event event)
     Unit* target_elite = nullptr;
     Unit* target_spore_bat = nullptr;
 
+    if (currentTarget && currentTarget->IsAlive() && currentTarget->getName() == "enchanted elemental")
+    {
+        return Attack(currentTarget);
+    }
+
     float distanceElemental = 1000.0f;
 
     GuidVector targets = context->GetValue<GuidVector>("possible targets")->Get();
@@ -158,14 +163,14 @@ bool SerpentShrineCavernLadyVashjCooseTargetAction::Execute(Event event)
         }
     }
 
-    if ( !target && target_elemental )
+    if (!target && target_elemental)
     {
         target = target_elemental;
     }
 
     if (target /*&& target != currentTarget*/)
     {
-        //LOG_INFO("ssc_strategies", "Bot {} is attacking {}", bot->GetName().c_str(), target->GetName().c_str());
+        // LOG_INFO("ssc_strategies", "Bot {} is attacking {}", bot->GetName().c_str(), target->GetName().c_str());
         return Attack(target);
     }
 
