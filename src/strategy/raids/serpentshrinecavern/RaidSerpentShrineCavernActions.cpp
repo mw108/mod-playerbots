@@ -73,11 +73,7 @@ bool SerpentShrineCavernLadyVashjCooseTargetAction::Execute(Event event)
         return false;
     }
 
-    bool isDps = botAI->IsDps(bot);
-    bool isRangedDps = botAI->IsRangedDps(bot);
     bool isHeal = botAI->IsHeal(bot);
-    bool isTank = botAI->IsTank(bot);
-    bool isAssistTank = botAI->IsAssistTank(bot);
     bool isPhase2 = false;
 
     if ( isHeal )
