@@ -25,4 +25,11 @@ public:
     bool Execute(Event event) override;
 };
 
+class ThrowTaintedCoreAction : public Action
+{
+public:
+    ThrowTaintedCoreAction(PlayerbotAI* botAI) : Action(botAI, "throw tainted core") {}
+    bool Execute(Event event) override;
+};
+
 #endif

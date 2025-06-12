@@ -9,3 +9,8 @@ bool SerpentShrineCavernLadyVashjTrigger::IsActive()
     }
     return false;
 }
+
+bool SerpentShrineCavernHasTaintedCoreTrigger::IsActive()
+{
+    return bot->HasItemCount(31088) > 0;
+}

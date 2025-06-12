@@ -168,7 +168,7 @@ bool SerpentShrineCavernLadyVashjCooseTargetAction::Execute(Event event)
             {
                 distance = target_boss->GetDistance2d(target_elemental);
             }
-            
+
             // Pick closest
             if (target_elemental && distance < distanceElemental)
             {
@@ -203,4 +203,19 @@ bool SerpentShrineCavernLadyVashjCooseTargetAction::Execute(Event event)
     }
 
     return false;
+}
+
+bool ThrowTaintedCoreAction::Execute(Event event)
+{
+    if (bot->HasItemCount(31088) > 0)
+    {
+        Player* master = bot->GetMaster();
+        float distance = bot->GetDistance2d(master);
+        if (distance >= 20.0f && distance < sPlayerbotAIConfig->spellDistance)
+        {
+            bot->SetTarget(master->GetGUID());
+            bot->UseItem(31088);
+        }
+    }
+    return true;
 }
