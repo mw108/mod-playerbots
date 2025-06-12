@@ -92,11 +92,6 @@ bool SerpentShrineCavernLadyVashjCooseTargetAction::Execute(Event event)
     Unit* target_elite = nullptr;
     Unit* target_spore_bat = nullptr;
 
-    if (currentTarget && currentTarget->IsAlive() && currentTarget->GetName() == "enchanted elemental")
-    {
-        return Attack(currentTarget);
-    }
-
     float distanceElemental = 1000.0f;
 
     GuidVector targets = context->GetValue<GuidVector>("possible targets")->Get();
@@ -162,24 +157,24 @@ bool SerpentShrineCavernLadyVashjCooseTargetAction::Execute(Event event)
         {
             distance = bot->GetDistance2d(target_elemental);
         }
-
+       
         // Pick closest
-        if (!target && target_elemental && distance < distanceElemental)
+        if (target_elemental && distance < distanceElemental)
         {
             distanceElemental = distance;
             target = target_elemental;
         }
 
-        // If no elemental, pick closest elite, if possible
-        if (!target && target_elite)
-        {
-            target = target_elite;
-        }
-
-        // If no elite, pick closest strider, if possible
-        if (!target && target_strider)
+        // Pick closest strider, if possible
+        if (target_strider)
         {
             target = target_strider;
+        }
+
+        // Pick closest elite, if possible
+        if (target_elite)
+        {
+            target = target_elite;
         }
     }
 
