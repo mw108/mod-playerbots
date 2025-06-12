@@ -68,15 +68,17 @@ bool SerpentShrineCavernCheckBuffsAction::isUseful()
 
 bool SerpentShrineCavernLadyVashjCooseTargetAction::Execute(Event event)
 {
+    static constexpr uint8_t SKULL_ICON_INDEX = 7;
+
     if (!bot->IsAlive())
     {
         return false;
     }
 
-    bool isHeal = botAI->IsHeal(bot);
+    bool isMainTank = botAI->IsMainTank(bot);
     bool isPhase2 = false;
 
-    if ( isHeal )
+    if (!isMainTank)
     {
         return false;
     }
@@ -85,6 +87,7 @@ bool SerpentShrineCavernLadyVashjCooseTargetAction::Execute(Event event)
     Unit* target = nullptr;
     Unit* target_boss = nullptr;
     Unit* target_elemental = nullptr;
+    Unit *target_tainted_elemental = nullptr;
     Unit* target_strider = nullptr;
     Unit* target_elite = nullptr;
     Unit* target_spore_bat = nullptr;
@@ -103,6 +106,11 @@ bool SerpentShrineCavernLadyVashjCooseTargetAction::Execute(Event event)
         if (!unit || !unit->IsAlive())
         {
             continue;
+        }
+
+        if (botAI->EqualLowercaseName(unit->GetName(), "tainted elemental"))
+        {
+            target_tainted_elemental = unit;
         }
 
         if (botAI->EqualLowercaseName(unit->GetName(), "enchanted elemental"))
@@ -141,7 +149,14 @@ bool SerpentShrineCavernLadyVashjCooseTargetAction::Execute(Event event)
             break;
         }
 
-        // Get distance to elemental, if possible
+        // Focus tainted elemental, if possible
+        if (target_tainted_elemental)
+        {
+            target = target_tainted_elemental;
+            break;
+        }
+
+        // Get distance to enchanted elemental, if possible
         float distance = 1000.0f;
         if (target_elemental)
         {
@@ -149,7 +164,7 @@ bool SerpentShrineCavernLadyVashjCooseTargetAction::Execute(Event event)
         }
 
         // Pick closest
-        if (target_elemental && distance < distanceElemental)
+        if (!target && target_elemental && distance < distanceElemental)
         {
             distanceElemental = distance;
             target = target_elemental;
@@ -168,16 +183,27 @@ bool SerpentShrineCavernLadyVashjCooseTargetAction::Execute(Event event)
         }
     }
 
-    // If no target is assigned and there is an elemental, attack it
+    // If no target is assigned and there is an enchanted elemental, attack it
     if (!target && target_elemental)
     {
         target = target_elemental;
     }
 
-    if (target /*&& target != currentTarget*/)
+    if (target)
     {
-        // LOG_INFO("ssc_strategies", "Bot {} is attacking {}", bot->GetName().c_str(), target->GetName().c_str());
-        return Attack(target);
+        // Thanks to Noscopezz ❤️
+        // https://github.com/liyunfan1223/mod-playerbots/discussions/1372#discussioncomment-13429030
+        if (Group* group = bot->GetGroup())
+        {
+            const ObjectGuid currentSkull = group->GetTargetIcon(SKULL_ICON_INDEX);
+            Unit* currentSkullUnit = botAI->GetUnit(currentSkull);
+
+            const bool needsUpdate = !currentSkullUnit || !currentSkullUnit->IsAlive() || currentSkullUnit != target;
+
+            if (needsUpdate && currentSkullUnit)
+                group->SetTargetIcon(SKULL_ICON_INDEX, bot->GetGUID(), target->GetGUID());
+        }
+        return false;
     }
 
     return false;
