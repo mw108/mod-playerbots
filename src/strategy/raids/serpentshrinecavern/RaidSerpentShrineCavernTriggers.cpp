@@ -12,5 +12,7 @@ bool SerpentShrineCavernLadyVashjTrigger::IsActive()
 
 bool SerpentShrineCavernHasTaintedCoreTrigger::IsActive()
 {
-    return bot->HasItemCount(31088) > 0;
+    int count = bot->HasItemCount(31088);
+    LOG_INFO("ssc_strategies", "{} has Tainted Core count {}", bot->GetName().c_str(), count);
+    return count > 0;
 }
