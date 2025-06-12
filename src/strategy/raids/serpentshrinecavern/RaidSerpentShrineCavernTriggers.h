@@ -17,6 +17,6 @@ class SerpentShrineCavernHasTaintedCoreTrigger : public Trigger
 public:
     SerpentShrineCavernHasTaintedCoreTrigger(PlayerbotAI* botAI) : Trigger(botAI, "has tainted core") {}
     bool IsActive() override;
-}
+};
 
 #endif
