@@ -209,7 +209,7 @@ bool ThrowTaintedCoreAction::Execute(Event event)
 {
     if (bot->HasItemCount(31088) > 0)
     {
-        Player* master = bot->GetMaster();
+        Player* master = botAI->GetMaster();
         float distance = bot->GetDistance2d(master);
         if (distance >= 20.0f && distance < sPlayerbotAIConfig->spellDistance)
         {
