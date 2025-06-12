@@ -200,7 +200,7 @@ bool SerpentShrineCavernLadyVashjCooseTargetAction::Execute(Event event)
 
             const bool needsUpdate = !currentSkullUnit || !currentSkullUnit->IsAlive() || currentSkullUnit != target;
 
-            if (needsUpdate && currentSkullUnit)
+            if (needsUpdate)
                 group->SetTargetIcon(SKULL_ICON_INDEX, bot->GetGUID(), target->GetGUID());
         }
         return false;
