@@ -87,118 +87,119 @@ bool SerpentShrineCavernLadyVashjCooseTargetAction::Execute(Event event)
     Unit* target = nullptr;
     Unit* target_boss = nullptr;
     Unit* target_elemental = nullptr;
-    Unit *target_tainted_elemental = nullptr;
+    Unit* target_tainted_elemental = nullptr;
     Unit* target_strider = nullptr;
     Unit* target_elite = nullptr;
     Unit* target_spore_bat = nullptr;
 
-    float distanceElemental = 1000.0f;
-
-    GuidVector targets = context->GetValue<GuidVector>("possible targets")->Get();
-    for (GuidVector::iterator i = targets.begin(); i != targets.end(); ++i)
+    target_boss = AI_VALUE2(Unit*, "find target", "lady vashj");
+    if (!target_boss)
     {
-        Unit* unit = botAI->GetUnit(*i);
-        if (!unit || !unit->IsAlive())
+        return false;
+    }
+
+    if (target_boss->HasAura(38112))  // SPELL_MAGIC_BARRIER
+    {
+        isPhase2 = true;
+    }
+
+    if (isPhase2)
+    {
+        float distanceElemental = 1000.0f;
+
+        GuidVector targets = context->GetValue<GuidVector>("possible targets")->Get();
+        for (GuidVector::iterator i = targets.begin(); i != targets.end(); ++i)
         {
-            continue;
+            Unit* unit = botAI->GetUnit(*i);
+            if (!unit || !unit->IsAlive())
+            {
+                continue;
+            }
+
+            if (botAI->EqualLowercaseName(unit->GetName(), "tainted elemental"))
+            {
+                target_tainted_elemental = unit;
+            }
+
+            if (botAI->EqualLowercaseName(unit->GetName(), "enchanted elemental"))
+            {
+                target_elemental = unit;
+            }
+
+            if (botAI->EqualLowercaseName(unit->GetName(), "coilfang elite"))
+            {
+                target_elite = unit;
+            }
+
+            if (botAI->EqualLowercaseName(unit->GetName(), "coilfang strider"))
+            {
+                target_strider = unit;
+            }
+
+            if (botAI->EqualLowercaseName(unit->GetName(), "toxic sporebat"))
+            {
+                target_spore_bat = unit;
+            }
+
+            // Focus tainted elemental, if possible
+            if (target_tainted_elemental)
+            {
+                target = target_tainted_elemental;
+                break;
+            }
+
+            // Pick closest strider, if possible
+            if (target_strider)
+            {
+                target = target_strider;
+                break;
+            }
+
+            // Pick closest elite, if possible
+            if (target_elite)
+            {
+                target = target_elite;
+                break;
+            }
+
+            // Get distance from Lady Vashj to enchanted elemental, if possible
+            float distance = 1000.0f;
+            if (target_elemental)
+            {
+                distance = target_boss->GetDistance2d(target_elemental);
+            }
+            
+            // Pick closest
+            if (target_elemental && distance < distanceElemental)
+            {
+                distanceElemental = distance;
+                target = target_elemental;
+            }
         }
 
-        if (botAI->EqualLowercaseName(unit->GetName(), "tainted elemental"))
+        // If no target is assigned and there is an enchanted elemental, attack it
+        if (!target && target_elemental)
         {
-            target_tainted_elemental = unit;
-        }
-
-        if (botAI->EqualLowercaseName(unit->GetName(), "enchanted elemental"))
-        {
-            target_elemental = unit;
-        }
-
-        if (botAI->EqualLowercaseName(unit->GetName(), "coilfang elite"))
-        {
-            target_elite = unit;
-        }
-
-        if (botAI->EqualLowercaseName(unit->GetName(), "coilfang strider"))
-        {
-            target_strider = unit;
-        }
-
-        if (botAI->EqualLowercaseName(unit->GetName(), "toxic sporebat"))
-        {
-            target_spore_bat = unit;
-        }
-
-        if (botAI->EqualLowercaseName(unit->GetName(), "lady vashj"))
-        {
-            target_boss = unit;
-        }
-
-        if (target_boss && target_boss->HasAura(38112))  // SPELL_MAGIC_BARRIER
-        {
-            isPhase2 = true;
-        }
-
-        if (!isPhase2)
-        {
-            target = target_boss;
-            break;
-        }
-
-        // Focus tainted elemental, if possible
-        if (target_tainted_elemental)
-        {
-            target = target_tainted_elemental;
-            break;
-        }
-
-        // Get distance to enchanted elemental, if possible
-        float distance = 1000.0f;
-        if (target_elemental)
-        {
-            distance = bot->GetDistance2d(target_elemental);
-        }
-       
-        // Pick closest
-        if (target_elemental && distance < distanceElemental)
-        {
-            distanceElemental = distance;
             target = target_elemental;
         }
 
-        // Pick closest strider, if possible
-        if (target_strider)
+        if (target)
         {
-            target = target_strider;
+            // Thanks to Noscopezz ❤️
+            // https://github.com/liyunfan1223/mod-playerbots/discussions/1372#discussioncomment-13429030
+            if (Group* group = bot->GetGroup())
+            {
+                const ObjectGuid currentSkull = group->GetTargetIcon(SKULL_ICON_INDEX);
+                Unit* currentSkullUnit = botAI->GetUnit(currentSkull);
+
+                const bool needsUpdate =
+                    !currentSkullUnit || !currentSkullUnit->IsAlive() || currentSkullUnit != target;
+
+                if (needsUpdate)
+                    group->SetTargetIcon(SKULL_ICON_INDEX, bot->GetGUID(), target->GetGUID());
+            }
+            return false;
         }
-
-        // Pick closest elite, if possible
-        if (target_elite)
-        {
-            target = target_elite;
-        }
-    }
-
-    // If no target is assigned and there is an enchanted elemental, attack it
-    if (!target && target_elemental)
-    {
-        target = target_elemental;
-    }
-
-    if (target)
-    {
-        // Thanks to Noscopezz ❤️
-        // https://github.com/liyunfan1223/mod-playerbots/discussions/1372#discussioncomment-13429030
-        if (Group* group = bot->GetGroup())
-        {
-            const ObjectGuid currentSkull = group->GetTargetIcon(SKULL_ICON_INDEX);
-            Unit* currentSkullUnit = botAI->GetUnit(currentSkull);
-
-            const bool needsUpdate = !currentSkullUnit || !currentSkullUnit->IsAlive() || currentSkullUnit != target;
-
-            if (needsUpdate)
-                group->SetTargetIcon(SKULL_ICON_INDEX, bot->GetGUID(), target->GetGUID());
-        }
-        return false;
     }
 
     return false;
