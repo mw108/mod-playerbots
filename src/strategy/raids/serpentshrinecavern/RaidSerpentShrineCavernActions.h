@@ -5,6 +5,7 @@
 #include "AttackAction.h"
 #include "GenericActions.h"
 #include "MovementActions.h"
+#include "UseItemAction.h"
 #include "PlayerbotAI.h"
 #include "Playerbots.h"
 
@@ -25,11 +26,12 @@ public:
     bool Execute(Event event) override;
 };
 
-class ThrowTaintedCoreAction : public Action
+class ThrowTaintedCoreAction : public UseItemAction
 {
 public:
-    ThrowTaintedCoreAction(PlayerbotAI* botAI) : Action(botAI, "throw tainted core") {}
+    ThrowTaintedCoreAction(PlayerbotAI* botAI) : UseItemAction(botAI, "throw tainted core") {}
     bool Execute(Event event) override;
+    bool isPossible() override;
 };
 
 #endif

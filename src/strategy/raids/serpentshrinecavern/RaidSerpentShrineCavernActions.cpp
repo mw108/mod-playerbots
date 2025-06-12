@@ -213,9 +213,17 @@ bool ThrowTaintedCoreAction::Execute(Event event)
         float distance = bot->GetDistance2d(master);
         if (distance >= 20.0f && distance < sPlayerbotAIConfig->spellDistance)
         {
+            Item* item = bot->GetItemByEntry(31088);
+            if (!item)
+            {
+                return false;
+            }
+
             bot->SetTarget(master->GetGUID());
-            bot->UseItem(31088);
+            return UseItemAuto(item);
         }
     }
-    return true;
+    return false;
 }
+
+bool ThrowTaintedCoreAction::isPossible() { return bot->GetMapId() == 548; /* Serpent Shrine Cavern */ }
