@@ -210,6 +210,11 @@ bool ThrowTaintedCoreAction::Execute(Event event)
     if (bot->HasItemCount(31088) > 0)
     {
         Player* master = botAI->GetMaster();
+        if (!master || !master->IsAlive())
+        {
+            return false;
+        }
+        
         float distance = bot->GetDistance2d(master);
         if (distance >= 10.0f && distance < sPlayerbotAIConfig->spellDistance)
         {
@@ -228,7 +233,7 @@ bool ThrowTaintedCoreAction::Execute(Event event)
 
             bool useResult = UseItem(item, ObjectGuid::Empty, nullptr, master); // Doesn't work either.
             LOG_INFO("ssc_strategies", "Item use result {} = {}", item->GetTemplate()->Name1.c_str(), useResult);
-            
+
             return useResult;
         }
     }
