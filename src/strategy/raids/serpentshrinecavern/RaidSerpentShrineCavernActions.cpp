@@ -211,20 +211,18 @@ bool ThrowTaintedCoreAction::Execute(Event event)
     {
         Player* master = botAI->GetMaster();
         float distance = bot->GetDistance2d(master);
-        LOG_INFO("ssc_strategies", "{} distance to {} is {}", bot->GetName().c_str(), master->GetName().c_str(), distance);
         if (distance >= 10.0f && distance < sPlayerbotAIConfig->spellDistance)
         {
             Item* item = bot->GetItemByEntry(31088);
             if (!item)
             {
-                LOG_INFO("ssc_strategies", "Item not found");
                 return false;
             }
 
-            LOG_INFO("ssc_strategies", "{} using item {} on {}", bot->GetName().c_str(), item->GetTemplate()->Name1.c_str(), master->GetName().c_str());
-            //bot->SetTarget(master->GetGUID());
-            bool useResult = UseItem(item, ObjectGuid::Empty, nullptr, master);
-            LOG_INFO("ssc_strategies", "Result = {}", useResult);
+            //LOG_INFO("ssc_strategies", "{} using item {} on {}", bot->GetName().c_str(), item->GetTemplate()->Name1.c_str(), master->GetName().c_str());
+            bot->SetTarget(master->GetGUID());
+            bool useResult = UseItemAuto(item); // UseItem(item, ObjectGuid::Empty, nullptr, master);
+            LOG_INFO("ssc_strategies", "Item use result {} = {}", item->GetTemplate()->Name1.c_str(), useResult);
             return useResult;
         }
     }
