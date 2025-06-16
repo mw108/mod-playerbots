@@ -220,9 +220,15 @@ bool ThrowTaintedCoreAction::Execute(Event event)
             }
 
             //LOG_INFO("ssc_strategies", "{} using item {} on {}", bot->GetName().c_str(), item->GetTemplate()->Name1.c_str(), master->GetName().c_str());
+            
+            /* Doesn't work
             bot->SetTarget(master->GetGUID());
-            bool useResult = UseItemAuto(item); // UseItem(item, ObjectGuid::Empty, nullptr, master);
+            bool useResult = UseItemAuto(item); 
+            */
+
+            bool useResult = UseItem(item, ObjectGuid::Empty, nullptr, master); // Doesn't work either.
             LOG_INFO("ssc_strategies", "Item use result {} = {}", item->GetTemplate()->Name1.c_str(), useResult);
+            
             return useResult;
         }
     }
