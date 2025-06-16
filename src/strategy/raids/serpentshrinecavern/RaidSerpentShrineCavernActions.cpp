@@ -214,7 +214,7 @@ bool ThrowTaintedCoreAction::Execute(Event event)
         {
             return false;
         }
-        
+
         float distance = bot->GetDistance2d(master);
         if (distance >= 10.0f && distance < sPlayerbotAIConfig->spellDistance)
         {
@@ -224,7 +224,7 @@ bool ThrowTaintedCoreAction::Execute(Event event)
                 return false;
             }
 
-            //LOG_INFO("ssc_strategies", "{} using item {} on {}", bot->GetName().c_str(), item->GetTemplate()->Name1.c_str(), master->GetName().c_str());
+            LOG_INFO("ssc_strategies", "{} using item {} on {}", bot->GetName().c_str(), item->GetTemplate()->Name1.c_str(), master->GetName().c_str());
             
             /* Doesn't work
             bot->SetTarget(master->GetGUID());
