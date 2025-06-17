@@ -207,6 +207,8 @@ bool SerpentShrineCavernLadyVashjCooseTargetAction::Execute(Event event)
 
 bool ThrowTaintedCoreAction::Execute(Event event)
 {
+    // Thanks again to Noscopezz ❤️
+    // https://github.com/liyunfan1223/mod-playerbots/discussions/1372#discussioncomment-13500699
     static constexpr uint32_t ITEM_TAINTED_CORE = 31088;
 
     if (!botAI->HasItemInInventory(ITEM_TAINTED_CORE))
@@ -223,13 +225,6 @@ bool ThrowTaintedCoreAction::Execute(Event event)
     Item* item = bot->GetItemByEntry(ITEM_TAINTED_CORE);
     if (!item)
         return false;
-
-    LOG_INFO("ssc_strategies", "{} using item {} on {}", bot->GetName().c_str(), item->GetTemplate()->Name1.c_str(), master->GetName().c_str());
-        
-    /* Doesn't work
-    bot->SetTarget(master->GetGUID());
-    bool useResult = UseItemAuto(item); 
-    */
 
     botAI->ImbueItem(item, master);
     return false;
