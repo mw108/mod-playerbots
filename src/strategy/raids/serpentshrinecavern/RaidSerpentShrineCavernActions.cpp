@@ -209,7 +209,7 @@ bool ThrowTaintedCoreAction::Execute(Event event)
 {
     static constexpr uint32_t ITEM_TAINTED_CORE = 31088;
 
-    if (!bot->HasItemInInventory(ITEM_TAINTED_CORE))
+    if (!botAI->HasItemInInventory(ITEM_TAINTED_CORE))
         return false;
 
     Player* master = botAI->GetMaster();
