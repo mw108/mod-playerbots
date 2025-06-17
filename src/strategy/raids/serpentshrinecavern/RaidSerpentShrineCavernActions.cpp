@@ -207,36 +207,31 @@ bool SerpentShrineCavernLadyVashjCooseTargetAction::Execute(Event event)
 
 bool ThrowTaintedCoreAction::Execute(Event event)
 {
-    if (bot->HasItemCount(31088) > 0)
-    {
-        Player* master = botAI->GetMaster();
-        if (!master || !master->IsAlive())
-        {
-            return false;
-        }
+    static constexpr uint32_t ITEM_TAINTED_CORE = 31088;
 
-        float distance = bot->GetDistance2d(master);
-        if (distance >= 10.0f && distance < sPlayerbotAIConfig->spellDistance)
-        {
-            Item* item = bot->GetItemByEntry(31088);
-            if (!item)
-            {
-                return false;
-            }
+    if (!bot->HasItemInInventory(ITEM_TAINTED_CORE))
+        return false;
 
-            LOG_INFO("ssc_strategies", "{} using item {} on {}", bot->GetName().c_str(), item->GetTemplate()->Name1.c_str(), master->GetName().c_str());
-            
-            /* Doesn't work
-            bot->SetTarget(master->GetGUID());
-            bool useResult = UseItemAuto(item); 
-            */
+    Player* master = botAI->GetMaster();
+    if (!master || !master->IsAlive())
+        return false;
 
-            bool useResult = UseItem(item, ObjectGuid::Empty, nullptr, master); // Doesn't work either.
-            LOG_INFO("ssc_strategies", "Item use result {} = {}", item->GetTemplate()->Name1.c_str(), useResult);
+    float distance = bot->GetDistance2d(master);
+    if (distance < 10.0f || distance > sPlayerbotAIConfig->spellDistance)
+        return false;
+    
+    Item* item = bot->GetItemByEntry(ITEM_TAINTED_CORE);
+    if (!item)
+        return false;
 
-            return useResult;
-        }
-    }
+    LOG_INFO("ssc_strategies", "{} using item {} on {}", bot->GetName().c_str(), item->GetTemplate()->Name1.c_str(), master->GetName().c_str());
+        
+    /* Doesn't work
+    bot->SetTarget(master->GetGUID());
+    bool useResult = UseItemAuto(item); 
+    */
+
+    botAI->ImbueItem(item, master);
     return false;
 }
 
