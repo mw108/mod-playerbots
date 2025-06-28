@@ -9,38 +9,38 @@
 #include "ChatActionContext.h"
 #include "ChatTriggerContext.h"
 #include "Playerbots.h"
-#include "RaidUlduarTriggerContext.h"
 #include "RaidUlduarActionContext.h"
+#include "RaidUlduarTriggerContext.h"
 #include "SharedValueContext.h"
 #include "StrategyContext.h"
 #include "TriggerContext.h"
 #include "ValueContext.h"
 #include "WorldPacketActionContext.h"
 #include "WorldPacketTriggerContext.h"
-#include "raids/RaidStrategyContext.h"
-#include "raids/blackwinglair/RaidBwlActionContext.h"
-#include "raids/blackwinglair/RaidBwlTriggerContext.h"
-#include "raids/naxxramas/RaidNaxxActionContext.h"
-#include "raids/naxxramas/RaidNaxxTriggerContext.h"
-#include "raids/icecrown/RaidIccActionContext.h"
-#include "raids/icecrown/RaidIccTriggerContext.h"
-#include "raids/obsidiansanctum/RaidOsActionContext.h"
-#include "raids/obsidiansanctum/RaidOsTriggerContext.h"
-#include "raids/eyeofeternity/RaidEoEActionContext.h"
-#include "raids/vaultofarchavon/RaidVoATriggerContext.h"
-#include "raids/onyxia/RaidOnyxiaActionContext.h"
-#include "raids/onyxia/RaidOnyxiaTriggerContext.h"
-#include "raids/vaultofarchavon/RaidVoAActionContext.h"
-#include "raids/eyeofeternity/RaidEoETriggerContext.h"
-#include "raids/moltencore/RaidMcActionContext.h"
-#include "raids/moltencore/RaidMcTriggerContext.h"
-#include "raids/aq20/RaidAq20ActionContext.h"
-#include "raids/aq20/RaidAq20TriggerContext.h"
 #include "dungeons/DungeonStrategyContext.h"
 #include "dungeons/wotlk/WotlkDungeonActionContext.h"
 #include "dungeons/wotlk/WotlkDungeonTriggerContext.h"
+#include "raids/RaidStrategyContext.h"
+#include "raids/aq20/RaidAq20ActionContext.h"
+#include "raids/aq20/RaidAq20TriggerContext.h"
+#include "raids/blackwinglair/RaidBwlActionContext.h"
+#include "raids/blackwinglair/RaidBwlTriggerContext.h"
+#include "raids/eyeofeternity/RaidEoEActionContext.h"
+#include "raids/eyeofeternity/RaidEoETriggerContext.h"
+#include "raids/icecrown/RaidIccActionContext.h"
+#include "raids/icecrown/RaidIccTriggerContext.h"
+#include "raids/moltencore/RaidMcActionContext.h"
+#include "raids/moltencore/RaidMcTriggerContext.h"
+#include "raids/naxxramas/RaidNaxxActionContext.h"
+#include "raids/naxxramas/RaidNaxxTriggerContext.h"
+#include "raids/obsidiansanctum/RaidOsActionContext.h"
+#include "raids/obsidiansanctum/RaidOsTriggerContext.h"
+#include "raids/onyxia/RaidOnyxiaActionContext.h"
+#include "raids/onyxia/RaidOnyxiaTriggerContext.h"
 #include "raids/serpentshrinecavern/RaidSerpentShrineCavernActionContext.h"
 #include "raids/serpentshrinecavern/RaidSerpentShrineCavernTriggerContext.h"
+#include "raids/vaultofarchavon/RaidVoAActionContext.h"
+#include "raids/vaultofarchavon/RaidVoATriggerContext.h"
 
 AiObjectContext::AiObjectContext(PlayerbotAI* botAI) : PlayerbotAIAware(botAI)
 {
@@ -64,6 +64,7 @@ AiObjectContext::AiObjectContext(PlayerbotAI* botAI) : PlayerbotAIAware(botAI)
     actionContexts.Add(new RaidVoAActionContext());
     actionContexts.Add(new RaidUlduarActionContext());
     actionContexts.Add(new RaidIccActionContext());
+    actionContexts.Add(new RaidSerpentShrineCavernActionContext());
     actionContexts.Add(new WotlkDungeonUKActionContext());
     actionContexts.Add(new WotlkDungeonNexActionContext());
     actionContexts.Add(new WotlkDungeonANActionContext());
@@ -79,8 +80,7 @@ AiObjectContext::AiObjectContext(PlayerbotAI* botAI) : PlayerbotAIAware(botAI)
     actionContexts.Add(new WotlkDungeonFoSActionContext());
     actionContexts.Add(new WotlkDungeonPoSActionContext());
     actionContexts.Add(new WotlkDungeonToCActionContext());
-    actionContexts.Add(new RaidSerpentShrineCavernActionContext());
-
+    
     triggerContexts.Add(new TriggerContext());
     triggerContexts.Add(new ChatTriggerContext());
     triggerContexts.Add(new WorldPacketTriggerContext());
@@ -94,6 +94,7 @@ AiObjectContext::AiObjectContext(PlayerbotAI* botAI) : PlayerbotAIAware(botAI)
     triggerContexts.Add(new RaidVoATriggerContext());
     triggerContexts.Add(new RaidUlduarTriggerContext());
     triggerContexts.Add(new RaidIccTriggerContext());
+    triggerContexts.Add(new RaidSerpentShrineCavernTriggerContext());
     triggerContexts.Add(new WotlkDungeonUKTriggerContext());
     triggerContexts.Add(new WotlkDungeonNexTriggerContext());
     triggerContexts.Add(new WotlkDungeonANTriggerContext());
@@ -109,7 +110,6 @@ AiObjectContext::AiObjectContext(PlayerbotAI* botAI) : PlayerbotAIAware(botAI)
     triggerContexts.Add(new WotlkDungeonFoSTriggerContext());
     triggerContexts.Add(new WotlkDungeonPoSTriggerContext());
     triggerContexts.Add(new WotlkDungeonToCTriggerContext());
-    triggerContexts.Add(new RaidSerpentShrineCavernTriggerContext());
 
     valueContexts.Add(new ValueContext());
 
